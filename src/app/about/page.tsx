@@ -7,8 +7,8 @@ export default function About() {
       {/* About Header */}
       <section className="bg-blue-600 py-16 text-white">
         <div className="container mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-4">About Our Plumbing Company</h1>
-          <p className="text-xl max-w-2xl">Trusted plumbing professionals serving our community with integrity and excellence since 2005.</p>
+          <h1 className="text-4xl font-bold mb-4">About Workspherepulse</h1>
+          <p className="text-xl max-w-2xl">WorkspherePulse is a professional platform that connects users with experienced advisors and a supportive community to address real-world workplace challenges.</p>
         </div>
       </section>
 
@@ -18,14 +18,14 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold mb-6 text-gray-800">Our Story</h2>
-              <p className="text-gray-700 mb-4">Founded in 2005, Plumbing Pros began with a simple mission: to provide honest, reliable plumbing services to our community. What started as a small family business has grown into a trusted team of plumbing professionals serving residential and commercial clients throughout the region.</p>
-              <p className="text-gray-700 mb-4">Our founder, with over 30 years of experience in the plumbing industry, established the company on the principles of quality workmanship, fair pricing, and exceptional customer service. These core values continue to guide our business today.</p>
-              <p className="text-gray-700">As we've grown, we've maintained our commitment to treating every customer's home or business as if it were our own. We take pride in solving plumbing problems efficiently and effectively, with minimal disruption to your daily life.</p>
+              <p className="text-gray-700 mb-4">WorkspherePulse was founded in 2024 with a clear mission: to create a trusted space where individuals can openly discuss workplace challenges and access meaningful, professional support. What began as a discussion forum for sharing experiences and perspectives has grown into a comprehensive platform designed to support workplace wellbeing and professional growth.</p>
+              <p className="text-gray-700 mb-4">Today, WorkspherePulse brings together a secure online forum and a dedicated application that connects users with highly qualified, experienced advisors. These advisors are professionals from diverse fields who specialize in addressing real-world workplace issues such as communication challenges, leadership concerns, conflict resolution, motivation, wellbeing, and work–life balance.</p>
+              <p className="text-gray-700">Our platform enables users to seek confidential guidance through one-to-one sessions with advisors who understand the complexities of modern workplaces. Sessions are conducted securely, allowing users to choose advisors based on expertise, availability, and individual needs.</p>
             </div>
             <div className="relative bg-gray-200 h-[400px] rounded-lg overflow-hidden">
               <Image 
-                src="/images/blue.jpg" 
-                alt="Plumbing Team" 
+                src="/images/logo.jpg" 
+                alt="Workspherepulse Team" 
                 fill 
                 className="object-cover" 
               />
@@ -68,15 +68,15 @@ export default function About() {
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Meet Our Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { name: "John Smith", position: "Master Plumber & Founder" },
+              { name: "John Smith", position: "Designation" },
               { name: "Sarah Johnson", position: "Operations Manager" },
-              { name: "Michael Brown", position: "Senior Plumber" },
+              { name: "Michael Brown", position: "Senior Analyst" },
               { name: "Emily Davis", position: "Customer Service Manager" }
             ].map((member, index) => (
               <div key={index} className="text-center">
                 <div className="relative bg-gray-200 h-64 rounded-lg mb-4 overflow-hidden">
                   <Image 
-                    src="/images/green.jpg" 
+                    src="/images/logo.jpg" 
                     alt={`${member.name} - ${member.position}`}
                     fill
                     className="object-cover"
@@ -98,15 +98,15 @@ export default function About() {
             {[1, 2, 3, 4].map((item) => (
               <div key={item} className="relative bg-white p-6 rounded-lg shadow-sm h-32 overflow-hidden">
                 <Image 
-                  src="/images/plumbing cert.png" 
-                  alt="Plumbing Certification" 
+                  src="/images/logo.png" 
+                  alt="Certification" 
                   fill
                   className="object-contain p-2" 
                 />
               </div>
             ))}
           </div>
-          <p className="text-center mt-8 text-gray-700">Our team maintains the highest industry certifications and participates in ongoing training to stay current with the latest plumbing technologies and techniques.</p>
+          <p className="text-center mt-8 text-gray-700">Our advisors are highly qualified professionals who continuously update their skills and knowledge to stay current with evolving workplace practices, policies, and challenges.</p>
         </div>
       </section>
 
@@ -114,7 +114,7 @@ export default function About() {
       <section className="py-16 bg-blue-600 text-white">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Work With Our Team?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">Contact us today to experience the difference that quality plumbing service can make.</p>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">Join us today to experience professional guidance that can make a real difference in your workplace.</p>
           <Link href="/contact" className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-6 rounded-md transition-colors">
             Get in Touch
           </Link>
