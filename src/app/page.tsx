@@ -4,7 +4,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col">
-
       {/* HERO SECTION */}
       <section className="relative w-full overflow-hidden">
         <div className="relative mx-auto grid min-h-[80vh] grid-cols-1 lg:grid-cols-2">
