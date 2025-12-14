@@ -77,24 +77,44 @@ export default function Home() {
       {/* Services Preview */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Our Plumbing Services</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Workspherepulse Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                title: "Emergency Repairs",
-                description: "24/7 emergency plumbing repairs to fix leaks, clogs, and burst pipes.",
+                title: "Workplace Wellbeing",
+                description: "Expert guidance to improve wellbeing, balance, and performance at work.",
                 image: "/images/pipes.jpg"
               },
               {
-                title: "Bathroom Remodeling",
-                description: "Complete bathroom renovation services from design to installation.",
+                title: "Boosting Motivation",
+                description: "Supporting sustained motivation through expert guidance and practical strategies.",
                 image: "/images/bathroom.jpg"
               },
               {
-                title: "Kitchen Plumbing",
-                description: "Professional kitchen plumbing services including sink and faucet installation.",
+                title: "Effective Communication",
+                description: "Expert support to build clear, confident, and effective communication.",
                 image: "/images/kitchensink.jpg"
-              }
+              },
+              {
+                title: "Conflict Resolution & Workplace Relationships",
+                description: "Expert support to resolve conflict and improve workplace relationships.",
+                image: "/images/bathroom.jpg"
+              },
+              {
+                title: "Leading with Confidence",
+                description: "Expert support to build confidence and lead with clarity.",
+                image: "/images/bathroom.jpg"
+              },
+              {
+                title: "Navigating Toxic Work Culture",
+                description: "Expert support to navigate and manage toxic work cultures.",
+                image: "/images/bathroom.jpg"
+              },
+              {
+                title: "Work-Life Balance",
+                description: "Expert support to build a healthier work–life balance.",
+                image: "/images/bathroom.jpg"
+              },
             ].map((service, index) => (
               <div key={index} className="bg-gray-100 rounded-lg hover:shadow-lg transition-shadow border border-gray-200 overflow-hidden">
                 <div className="h-48 relative">
@@ -160,38 +180,38 @@ export default function Home() {
       {/* Testimonials */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">What Our Customers Say</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Meet Our Advisors</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 name: "Sarah Johnson",
                 location: "Downtown",
-                quote: "The plumber arrived within an hour of my call and fixed my leaking pipe quickly. Great service!"
+                quote: "lorem ipsum some text"
               },
               {
                 name: "Michael Davis",
                 location: "Westside",
-                quote: "They remodeled our entire bathroom and the results exceeded our expectations. Professional and detail-oriented."
+                quote: "lorem ipsum some text"
               },
               {
                 name: "Michael Davis",
                 location: "Westside",
-                quote: "They remodeled our entire bathroom and the results exceeded our expectations. Professional and detail-oriented."
+                quote: "lorem ipsum some text"
               },
               {
                 name: "Michael Davis",
                 location: "Westside",
-                quote: "They remodeled our entire bathroom and the results exceeded our expectations. Professional and detail-oriented."
+                quote: "lorem ipsum some text"
               },
               {
                 name: "Michael Davis",
                 location: "Westside",
-                quote: "They remodeled our entire bathroom and the results exceeded our expectations. Professional and detail-oriented."
+                quote: "lorem ipsum some text"
               },
               {
                 name: "Jennifer Smith",
                 location: "Northside",
-                quote: "I've used their services multiple times and they're always reliable, clean, and reasonably priced."
+                quote: "lorem ipsum some text"
               }
             ].map((testimonial, index) => (
               <div key={index} className="bg-gray-100 p-6 rounded-lg border border-gray-200">
@@ -222,7 +242,7 @@ export default function Home() {
       <section className="py-16 bg-blue-600 text-white">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">Apply as an Advisor</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">If you have expertise to share and enjoy helping others make informed decisions, we invite you to apply as an advisor. Our platform connects advisors with users seeking reliable guidance across a range of topics. Apply to join our advisor network, showcase your experience, and start supporting users through one-to-one sessions and consultations.</p>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">We invite you to apply as an advisor. Our platform connects advisors with users seeking reliable guidance Apply to join our advisor network, showcase your experience, and start supporting users through one-to-one sessions and consultations.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/contact" className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-6 rounded-md transition-colors">
               Join Workspherepulse
