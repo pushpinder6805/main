@@ -1,6 +1,7 @@
-"use client"
+"use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 export default function Header() {
@@ -10,9 +11,16 @@ export default function Header() {
     <header className="bg-white shadow-sm">
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-blue-600">
-            workspherepulse
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/logo.png"
+              alt="Worksphere Pulse"
+              width={160}
+              height={40}
+              priority
+            />
           </Link>
+
           
           <nav className="hidden md:flex space-x-8">
             <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium">
