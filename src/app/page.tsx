@@ -13,31 +13,12 @@ export default function Home() {
             <div className="max-w-2xl">
 
               {/* TITLE */}
-              <h1
-                className="
-                  mb-[20px]
-                  text-left
-                  font-['Playfair_Display']
-                  text-[3.6rem]
-                  font-bold
-                  leading-[1.2]
-                  text-white
-                "
-              >
-                Let's navigate together – address workplace issues, build bridges
+              <h1 className="mb-[20px] text-left text-[3.6rem] font-bold leading-[1.2] text-white">
+                Let’s navigate together – address workplace issues, build bridges
               </h1>
 
               {/* DESCRIPTION */}
-              <p
-                className="
-                  mb-[30px]
-                  text-left
-                  font-['Montserrat']
-                  text-[17px]
-                  leading-[1.6]
-                  text-[#e8e8e8]
-                "
-              >
+              <p className="mb-[30px] text-left text-[17px] leading-[1.6] text-[#e8e8e8]">
                 Our website is dedicated to professional growth through shared
                 experiences and communal advice to foster mental and emotional
                 well-being at your place of work.
@@ -96,6 +77,7 @@ export default function Home() {
     </div>
   );
 }
+
 
 
       {/* Services Preview */}
