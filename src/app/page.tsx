@@ -6,33 +6,71 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center">
-        <div className="absolute inset-0 z-0 bg-blue-900">
-          {/* Placeholder for hero image */}
-          <Image 
-            src="/images/banner.avif" 
-            alt="worksphere green banner" 
-            fill 
-            className="object-cover" 
-            style={{ objectPosition: 'center top' }} 
-          />
-          <div className="w-full h-full flex items-center justify-center text-white/50 text-xl font-semibold">
-            workspherepulse banner
-          </div>
-        </div>
-        <div className="container mx-auto px-6 z-10 text-white">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">Let's navigate together - address workplace issues, build bridges</h1>
-            <p className="text-xl mb-8 text-white">Our website is dedicated to professional growth through shared experiences and communal advice to foster mental and emotional well-being at your place of work.</p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/contact" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md text-center transition-colors">
-                Request Service
-              </Link>
-              <Link href="/services" className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-6 rounded-md text-center transition-colors">
-                Our Services
-              </Link>
+      {/* Hero Section */}
+      <section className="relative w-full overflow-hidden">
+        <div className="relative mx-auto grid min-h-[80vh] grid-cols-1 lg:grid-cols-2">
+
+          {/* LEFT: Text */}
+          <div className="flex items-center bg-[rgb(75,78,61)] px-6 py-16 text-white lg:px-20">
+            <div className="max-w-2xl">
+              <h1 className="mb-4 text-4xl font-bold leading-tight md:text-6xl">
+                Let's navigate together - address workplace issues, build bridges
+              </h1>
+
+              <p className="mb-8 text-xl text-slate-200">
+                Our website is dedicated to professional growth through shared
+                experiences and communal advice to foster mental and emotional
+                well-being at your place of work.
+              </p>
+
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href="/contact"
+                  className="rounded-md bg-blue-600 px-6 py-3 text-center font-bold text-white transition-colors hover:bg-blue-700"
+                >
+                  Request Service
+                </Link>
+
+                <Link
+                  href="/services"
+                  className="rounded-md bg-white px-6 py-3 text-center font-bold text-blue-600 transition-colors hover:bg-gray-100"
+                >
+                  Our Services
+                </Link>
+              </div>
             </div>
           </div>
+
+          {/* RIGHT: Image */}
+          <div className="relative h-[320px] lg:h-auto">
+            <Image
+              src="/images/banner.avif"
+              alt="worksphere green banner"
+              fill
+              priority
+              className="object-cover"
+              style={{ objectPosition: "center top" }}
+            />
+          </div>
+
+          {/* CENTER GRADIENT DIVIDER */}
+          <div
+            className="
+              pointer-events-none
+              absolute
+              top-0
+              bottom-0
+              left-1/2
+              z-10
+              hidden
+              w-[35px]
+              -translate-x-1/2
+              bg-gradient-to-r
+              from-[rgb(75,78,61)]
+              to-transparent
+              lg:block
+            "
+          />
         </div>
       </section>
 
