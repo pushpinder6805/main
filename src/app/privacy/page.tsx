@@ -26,7 +26,6 @@ export default function PrivacyPolicy() {
             <h2 className="text-black">2. How We Use Your Information</h2>
             <p className="text-black">We use the information we collect to:</p>
             <ul className="text-black">
-              <li>Provide and improve our plumbing services</li>
               <li>Communicate with you about appointments and services</li>
               <li>Process payments and maintain accounts</li>
               <li>Send service reminders and maintenance recommendations</li>
@@ -66,9 +65,9 @@ export default function PrivacyPolicy() {
             <h2 className="text-black">9. Contact Us</h2>
             <p className="text-black">If you have questions or concerns about our Privacy Policy or data practices, please contact us at:</p>
             <p className="text-black">
-              Email: privacy@plumbingcompany.com<br />
+              Email: privacy@workspherepulse.com<br />
               Phone: (555) 123-4567<br />
-              Address: 123 Plumbing Street, Anytown, ST 12345
+              Address: 123 Lorem ipsum, Anytown, ST 12345
             </p>
             
             <p className="text-sm text-black mt-8">Last updated: {new Date().toLocaleDateString()}</p>
