@@ -121,27 +121,27 @@ export default function Home() {
       {/* Why Choose Us */}
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Why Choose Our Plumbing Services</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Why Choose Workspherepulse</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { 
-                title: "Licensed & Insured", 
-                description: "All our plumbers are fully licensed and insured.",
+                title: "Expert Advisors", 
+                description: "Connect with verified advisors and book one-to-one sessions based on your specific issue or requirement.",
                 icon: ShieldCheckIcon
               },
               { 
-                title: "24/7 Availability", 
-                description: "Emergency services available any time, day or night.",
+                title: "Pay Per Session", 
+                description: "Choose an advisor, view their rate, and pay only for the session you book—no subscriptions required.",
                 icon: ClockIcon
               },
               { 
-                title: "Fair Pricing", 
-                description: "Transparent pricing with no hidden fees or surprises.",
+                title: "Secure Zoom Meetings", 
+                description: "All sessions are conducted through secure, scheduled Zoom meetings set up directly by our platform.",
                 icon: CurrencyDollarIcon
               },
               { 
-                title: "Satisfaction Guaranteed", 
-                description: "We're not happy until you're completely satisfied.",
+                title: "Safe PayPal Payments", 
+                description: "Payments are processed securely via PayPal, ensuring buyer protection and a trusted checkout experience.",
                 icon: CheckBadgeIcon
               }
             ].map((item, index) => (
@@ -206,11 +206,11 @@ export default function Home() {
       {/* Call to Action */}
       <section className="py-16 bg-blue-600 text-white">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">Need a Plumber Today?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">Our team of experienced plumbers is ready to help with any plumbing issue you might have.</p>
+          <h2 className="text-3xl font-bold mb-4">Apply as an Advisor</h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">If you have expertise to share and enjoy helping others make informed decisions, we invite you to apply as an advisor. Our platform connects advisors with users seeking reliable guidance across a range of topics. Apply to join our advisor network, showcase your experience, and start supporting users through one-to-one sessions and consultations.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link href="/contact" className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-6 rounded-md transition-colors">
-              Contact Us
+              Join Workspherepulse
             </Link>
             <a href="tel:+15551234567" className="border-2 border-white hover:bg-white/10 text-white font-bold py-3 px-6 rounded-md transition-colors">
               Call (555) 123-4567
