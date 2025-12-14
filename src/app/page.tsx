@@ -41,6 +41,17 @@ export default function Home() {
             </div>
           </div>
 
+          {/* RIGHT: Image */}
+          <div className="relative h-[320px] lg:h-auto">
+            <Image
+              src="/images/banner.avif"
+              alt="worksphere green banner"
+              fill
+              priority
+              className="object-cover"
+              style={{ objectPosition: "center top" }}
+            />
+          </div>
           
           {/* CENTER GRADIENT DIVIDER */}
           <div
