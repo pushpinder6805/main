@@ -27,7 +27,7 @@ body {
 /* HERO TITLE override */
 section.relative.w-full.overflow-hidden h1 {
   font-family: "Playfair Display", serif;
-  font-size: 3.5rem;
+  font-size: 3.4rem;
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 20px;
@@ -43,4 +43,23 @@ section.relative.w-full.overflow-hidden p {
   margin-bottom: 30px;
   text-align: left;
   color: #e8e8e8;
+}
+/* HERO CTA BUTTON — matches unique-banner-button */
+section.relative.w-full.overflow-hidden a.bg-blue-600 {
+  font-family: "Montserrat", sans-serif;
+  background-color: #c66a7a;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 30px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: none;
+}
+
+/* Hover state */
+section.relative.w-full.overflow-hidden a.bg-blue-600:hover {
+  background-color: #b45f6e;
 }
