@@ -13,7 +13,7 @@ export default function Header() {
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center">
             <Image
-              src="/logo.png"
+              src="/images/logo.png"
               alt="Worksphere Pulse"
               width={160}
               height={40}
