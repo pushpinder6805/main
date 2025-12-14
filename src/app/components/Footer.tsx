@@ -33,12 +33,11 @@ export default function Footer() {
           <div>
             <h3 className="text-sm font-semibold mb-3">Services</h3>
             <ul className="space-y-1 text-sm">
-              <li><Link href="/services#emergency-repairs" className="text-gray-400 hover:text-white">Emergency Repairs</Link></li>
-              <li><Link href="/services#bathroom-remodeling" className="text-gray-400 hover:text-white">Bathroom Remodeling</Link></li>
-              <li><Link href="/services#drain-cleaning" className="text-gray-400 hover:text-white">Drain Cleaning</Link></li>
-              <li><Link href="/services#water-heater-services" className="text-gray-400 hover:text-white">Water Heater Services</Link></li>
-              <li><Link href="/services#pipe-repair" className="text-gray-400 hover:text-white">Pipe Repair</Link></li>
-              <li><Link href="/services#commercial-plumbing" className="text-gray-400 hover:text-white">Commercial Plumbing</Link></li>
+              <li><Link href="/services#emergency-repairs" className="text-gray-400 hover:text-white">Effective Communication</Link></li>
+              <li><Link href="/services#bathroom-remodeling" className="text-gray-400 hover:text-white">Conflict Resolution & Workplace Relationships</Link></li>
+              <li><Link href="/services#drain-cleaning" className="text-gray-400 hover:text-white">Leading with Confidence</Link></li>
+              <li><Link href="/services#water-heater-services" className="text-gray-400 hover:text-white">Navigating Toxic Work Culture</Link></li>
+              <li><Link href="/services#pipe-repair" className="text-gray-400 hover:text-white">Work-Life Balance</Link></li>
             </ul>
           </div>
           
@@ -61,7 +60,7 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span>123 Plumbing Street<br />Anytown, ST 12345</span>
+                <span>123 lorem ipsum<br />Anytown, ST 12345</span>
               </li>
               <li className="flex items-center">
                 <svg className="h-4 w-4 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -73,7 +72,7 @@ export default function Footer() {
                 <svg className="h-4 w-4 mr-2 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <span>info@plumbingcompany.com</span>
+                <span>info@workspherepulse.com</span>
               </li>
             </ul>
           </div>
@@ -81,10 +80,10 @@ export default function Footer() {
         
         <div className="border-t border-gray-800 mt-6 pt-6">
           <p className="text-gray-400 text-xs text-center">
-            © {new Date().getFullYear()} Plumbing Pros. All rights reserved.
+            © {new Date().getFullYear()} workspherepulse. All rights reserved.
           </p>
           <p className="text-gray-500 text-xs text-center mt-2">
-            Website by <span className="hover:text-gray-300">Timoor Nurzhanov</span>
+            Website by <span className="hover:text-gray-300">workspherepulse Team</span>
           </p>
         </div>
       </div>
