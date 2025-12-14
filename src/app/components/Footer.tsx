@@ -6,8 +6,8 @@ export default function Footer() {
       <div className="container mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div>
-            <h3 className="text-lg font-bold mb-3">Plumbing Pros</h3>
-            <p className="text-gray-400 mb-3 text-sm">Professional plumbing services for residential and commercial properties. Available 24/7.</p>
+            <h3 className="text-lg font-bold mb-3">Workspherepulse</h3>
+            <p className="text-gray-400 mb-3 text-sm">website dedicated to professional growth through shared experiences and communal advice to foster mental and emotional well-being at your place of work..</p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white">
                 <span className="sr-only">Facebook</span>
