@@ -10,7 +10,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0 bg-blue-900">
           {/* Placeholder for hero image */}
           <Image 
-            src="/banner.avif" 
+            src="/images/banner.avif" 
             alt="worksphere green banner" 
             fill 
             className="object-cover" 
