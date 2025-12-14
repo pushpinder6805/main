@@ -61,7 +61,7 @@ export default function Home() {
               top-0
               bottom-0
               left-1/2
-              z-10
+              z-30
               hidden
               w-[35px]
               -translate-x-1/2
