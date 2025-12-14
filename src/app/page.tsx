@@ -1,27 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ShieldCheckIcon, ClockIcon, CurrencyDollarIcon, CheckBadgeIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <main className="min-h-screen flex flex-col">
+
+      {/* HERO SECTION */}
       <section className="relative w-full overflow-hidden">
         <div className="relative mx-auto grid min-h-[80vh] grid-cols-1 lg:grid-cols-2">
 
           {/* LEFT: Text */}
           <div className="flex items-center bg-[rgb(75,78,61)] px-6 py-16 text-white lg:px-20">
             <div className="max-w-2xl">
-
-              {/* TITLE */}
               <h1 className="mb-[20px] text-left text-[3.6rem] font-bold leading-[1.2] text-white">
                 Let’s navigate together – address workplace issues, build bridges
               </h1>
 
-              {/* DESCRIPTION */}
               <p className="mb-[30px] text-left text-[17px] leading-[1.6] text-[#e8e8e8]">
-                Our website is dedicated to professional growth through shared
-                experiences and communal advice to foster mental and emotional
-                well-being at your place of work.
+                Our platform supports professional growth through shared
+                experiences and expert guidance to improve mental and emotional
+                wellbeing at work.
               </p>
 
               <div className="flex flex-col gap-4 sm:flex-row">
@@ -46,7 +44,7 @@ export default function Home() {
           <div className="relative h-[320px] lg:h-auto">
             <Image
               src="/images/banner.avif"
-              alt="worksphere green banner"
+              alt="Worksphere banner"
               fill
               priority
               className="object-cover"
@@ -74,9 +72,6 @@ export default function Home() {
           />
         </div>
       </section>
-    </div>
-  );
-}
 
 
 
