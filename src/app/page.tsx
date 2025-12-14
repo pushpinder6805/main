@@ -83,37 +83,37 @@ export default function Home() {
               {
                 title: "Workplace Wellbeing",
                 description: "Expert guidance to improve wellbeing, balance, and performance at work.",
-                image: "/images/pipes.jpg"
+                image: "/images/Workplace-Wellbeing.jpg"
               },
               {
                 title: "Boosting Motivation",
                 description: "Supporting sustained motivation through expert guidance and practical strategies.",
-                image: "/images/bathroom.jpg"
+                image: "/images/motivation.webp"
               },
               {
                 title: "Effective Communication",
                 description: "Expert support to build clear, confident, and effective communication.",
-                image: "/images/kitchensink.jpg"
+                image: "/images/Effective-Communication.jpg"
               },
               {
                 title: "Conflict Resolution & Workplace Relationships",
                 description: "Expert support to resolve conflict and improve workplace relationships.",
-                image: "/images/bathroom.jpg"
+                image: "/images/Common.png"
               },
               {
                 title: "Leading with Confidence",
                 description: "Expert support to build confidence and lead with clarity.",
-                image: "/images/bathroom.jpg"
+                image: "/images/lead.png"
               },
               {
                 title: "Navigating Toxic Work Culture",
                 description: "Expert support to navigate and manage toxic work cultures.",
-                image: "/images/bathroom.jpg"
+                image: "/images/toxic.png"
               },
               {
                 title: "Work-Life Balance",
                 description: "Expert support to build a healthier work–life balance.",
-                image: "/images/bathroom.jpg"
+                image: "/images/work-life.jpg"
               },
             ].map((service, index) => (
               <div key={index} className="bg-gray-100 rounded-lg hover:shadow-lg transition-shadow border border-gray-200 overflow-hidden">
