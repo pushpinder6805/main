@@ -23,7 +23,7 @@ export default function Contact() {
   };
 
   const generateMailtoLink = () => {
-    const subject = `Plumbing Service Request: ${formData.service || 'General Inquiry'}`;
+    const subject = `Service Request: ${formData.service || 'General Inquiry'}`;
     
     const body = `
 First Name: ${formData.firstName}
@@ -36,7 +36,7 @@ Message:
 ${formData.message}
     `;
     
-    return `mailto:timoor.nurzhanov@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    return `mailto:semrushn@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 // TODO: CHANGE TO CLIENT EMAIL
   return (
@@ -45,7 +45,7 @@ ${formData.message}
       <section className="bg-blue-600 py-16 text-white">
         <div className="container mx-auto px-6">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl max-w-2xl">Get in touch with our team for all your plumbing needs. We're here to help 24/7.</p>
+          <p className="text-xl max-w-2xl">Get in touch with our team for all your queries. We're here to help 24/7.</p>
         </div>
       </section>
 
@@ -79,7 +79,7 @@ ${formData.message}
                   <div>
                     <h3 className="font-semibold text-lg text-gray-800">Email</h3>
                     <p className="text-gray-600 mb-1">For quotes and information</p>
-                    <a href="mailto:info@plumbingcompany.com" className="text-blue-600 font-medium">info@plumbingcompany.com</a>
+                    <a href="mailto:info@plumbingcompany.com" className="text-blue-600 font-medium">info@workspherepulse.com</a>
                   </div>
                 </div>
 
@@ -94,7 +94,7 @@ ${formData.message}
                     <h3 className="font-semibold text-lg text-gray-800">Office Location</h3>
                     <p className="text-gray-600 mb-1">Main Service Center</p>
                     <address className="not-italic text-gray-700">
-                      123 Plumbing Street<br />
+                      123 lorem ipsum<br />
                       Anytown, ST 12345
                     </address>
                   </div>
@@ -160,10 +160,13 @@ ${formData.message}
                       onChange={handleChange}
                     >
                       <option value="" className="text-black">Select a service</option>
-                      <option value="Emergency Repair" className="text-black">Emergency Repair</option>
-                      <option value="General Plumbing" className="text-black">General Plumbing</option>
-                      <option value="Installation" className="text-black">Installation</option>
-                      <option value="Maintenance" className="text-black">Maintenance</option>
+                      <option value="Emergency Repair" className="text-black">Workplace Wellbeing</option>
+                      <option value="General Plumbing" className="text-black">Boosting Motivation</option>
+                      <option value="Installation" className="text-black">Effective Communication</option>
+                      <option value="Maintenance" className="text-black">Conflict Resolution & Workplace Relationships</option>
+                       <option value="Maintenance" className="text-black">Leading with Confidence</option>
+                       <option value="Maintenance" className="text-black">Navigating Toxic Work Culture</option>
+                       <option value="Maintenance" className="text-black">Work-Life Balance</option>
                       <option value="Other" className="text-black">Other</option>
                     </select>
                   </div>
@@ -172,7 +175,7 @@ ${formData.message}
                     <textarea 
                       id="message" 
                       rows={4} 
-                      placeholder="Tell us about your plumbing needs" 
+                      placeholder="Tell us about your queries" 
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black placeholder-gray-500"
                       value={formData.message}
                       onChange={handleChange}
@@ -193,7 +196,7 @@ ${formData.message}
               <div className="mt-8">
                 <h3 className="text-xl font-semibold mb-4 text-gray-800">Emergency Service</h3>
                 <div className="bg-red-50 p-6 rounded-lg border border-red-200">
-                  <p className="text-gray-700 mb-4">For emergency plumbing issues requiring immediate attention, please call our 24/7 emergency line:</p>
+                  <p className="text-gray-700 mb-4">For emergency issues requiring immediate attention, please call our 24/7 emergency line:</p>
                   <a href="tel:+15551234567" className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-md transition-colors inline-flex items-center">
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -265,7 +268,7 @@ ${formData.message}
             </div>
             <div>
               <h3 className="font-semibold text-lg mb-3 text-gray-800">Emergency Service</h3>
-              <p className="text-gray-700">Our emergency plumbing service is available 24 hours a day, 7 days a week, including holidays. Call our emergency line for immediate assistance.</p>
+              <p className="text-gray-700">Our emergency service is available 24 hours a day, 7 days a week, including holidays. Call our emergency line for immediate assistance.</p>
             </div>
           </div>
         </div>
@@ -274,8 +277,8 @@ ${formData.message}
       {/* Emergency CTA */}
       <section className="py-16 bg-blue-600 text-white">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">Plumbing Emergency?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">Don't wait! Our emergency plumbers are available 24/7 to help with urgent plumbing issues.</p>
+          <h2 className="text-3xl font-bold mb-4">Emergency?</h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto">Don't wait! we are available 24/7 to help with urgent issues.</p>
           <a href="tel:+15551234567" className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-6 rounded-md transition-colors inline-flex items-center">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
