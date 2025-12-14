@@ -41,9 +41,27 @@ export default function Home() {
             </div>
           </div>
 
-          {/* RIGHT: Image */}
-          <div className="relative h-[320px] lg:h-auto">
-            <Image
+          
+          {/* CENTER GRADIENT DIVIDER */}
+          <div
+            className="
+              pointer-events-none
+              absolute
+              top-0
+              bottom-0
+              left-1/2
+              z-30
+              hidden
+              w-[35px]
+              -translate-x-1/2
+              bg-gradient-to-r
+              from-[rgb(75,78,61)]
+              to-transparent
+              lg:block
+            "
+          />
+        </div>
+      </section>
 
       {/* Services Preview */}
       <section className="py-16 bg-white">
