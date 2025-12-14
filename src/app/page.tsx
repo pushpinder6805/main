@@ -10,8 +10,8 @@ export default function Home() {
         <div className="absolute inset-0 z-0 bg-blue-900">
           {/* Placeholder for hero image */}
           <Image 
-            src="/images/plumbing-hero.jpg" 
-            alt="Plumbing Hero" 
+            src="https://impactinvestingcommunity.com/uploads/default/original/1X/b0e0e74da77b15fd2e029de719dc5874fe1cd86a.avif" 
+            alt="worksphere green banner" 
             fill 
             className="object-cover" 
             style={{ objectPosition: 'center top' }} 
