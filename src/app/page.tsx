@@ -22,8 +22,8 @@ export default function Home() {
         </div>
         <div className="container mx-auto px-6 z-10 text-white">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">Fast, Reliable Plumbing Services</h1>
-            <p className="text-xl mb-8 text-white">Available 24/7 for all your emergency plumbing needs</p>
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">Let's navigate together - address workplace issues, build bridges</h1>
+            <p className="text-xl mb-8 text-white">Our website is dedicated to professional growth through shared experiences and communal advice to foster mental and emotional well-being at your place of work.</p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/contact" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md text-center transition-colors">
                 Request Service
