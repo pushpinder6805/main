@@ -24,7 +24,7 @@ export default function About() {
             </div>
             <div className="relative bg-gray-200 h-[400px] rounded-lg overflow-hidden">
               <Image 
-                src="/images/logo.jpg" 
+                src="/images/logo.png" 
                 alt="Workspherepulse Team" 
                 fill 
                 className="object-cover" 
@@ -76,7 +76,7 @@ export default function About() {
               <div key={index} className="text-center">
                 <div className="relative bg-gray-200 h-64 rounded-lg mb-4 overflow-hidden">
                   <Image 
-                    src="/images/logo.jpg" 
+                    src="/images/logo.png" 
                     alt={`${member.name} - ${member.position}`}
                     fill
                     className="object-cover"
