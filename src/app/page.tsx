@@ -17,7 +17,7 @@ export default function Home() {
             style={{ objectPosition: 'center top' }} 
           />
           <div className="w-full h-full flex items-center justify-center text-white/50 text-xl font-semibold">
-            Plumbing Hero Image Placeholder
+            workspherepulse banner
           </div>
         </div>
         <div className="container mx-auto px-6 z-10 text-white">
