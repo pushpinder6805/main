@@ -135,13 +135,13 @@ export default function Home() {
                 icon: ClockIcon
               },
               { 
-                title: "Secure Zoom Meetings", 
-                description: "All sessions are conducted through secure, scheduled Zoom meetings set up directly by our platform.",
+                title: "Safe PayPal Payments", 
+                description: "Payments are processed securely via PayPal, ensuring buyer protection and a trusted checkout experience.",
                 icon: CurrencyDollarIcon
               },
               { 
-                title: "Safe PayPal Payments", 
-                description: "Payments are processed securely via PayPal, ensuring buyer protection and a trusted checkout experience.",
+                title: "Secure Zoom Meetings", 
+                description: "All sessions are conducted through secure, scheduled Zoom meetings set up directly by our platform",
                 icon: CheckBadgeIcon
               }
             ].map((item, index) => (
@@ -167,6 +167,21 @@ export default function Home() {
                 name: "Sarah Johnson",
                 location: "Downtown",
                 quote: "The plumber arrived within an hour of my call and fixed my leaking pipe quickly. Great service!"
+              },
+              {
+                name: "Michael Davis",
+                location: "Westside",
+                quote: "They remodeled our entire bathroom and the results exceeded our expectations. Professional and detail-oriented."
+              },
+              {
+                name: "Michael Davis",
+                location: "Westside",
+                quote: "They remodeled our entire bathroom and the results exceeded our expectations. Professional and detail-oriented."
+              },
+              {
+                name: "Michael Davis",
+                location: "Westside",
+                quote: "They remodeled our entire bathroom and the results exceeded our expectations. Professional and detail-oriented."
               },
               {
                 name: "Michael Davis",
