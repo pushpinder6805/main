@@ -1,24 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ShieldCheckIcon, ClockIcon, CurrencyDollarIcon, CheckBadgeIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col">
-      {/* HERO SECTION */}
+    <div className="min-h-screen flex flex-col">
+      {/* Hero Section */}
+      {/* Hero Section */}
       <section className="relative w-full overflow-hidden">
         <div className="relative mx-auto grid min-h-[80vh] grid-cols-1 lg:grid-cols-2">
 
           {/* LEFT: Text */}
           <div className="flex items-center bg-[rgb(75,78,61)] px-6 py-16 text-white lg:px-20">
             <div className="max-w-2xl">
-              <h1 className="mb-[20px] text-left text-[3.6rem] font-bold leading-[1.2] text-white">
-                Let’s navigate together – address workplace issues, build bridges
+              <h1 className="mb-4 text-4xl font-bold leading-tight md:text-6xl">
+                Let's navigate together - address workplace issues, build bridges
               </h1>
 
-              <p className="mb-[30px] text-left text-[17px] leading-[1.6] text-[#e8e8e8]">
-                Our platform supports professional growth through shared
-                experiences and expert guidance to improve mental and emotional
-                wellbeing at work.
+              <p className="mb-8 text-xl text-slate-200">
+                Our website is dedicated to professional growth through shared
+                experiences and communal advice to foster mental and emotional
+                well-being at your place of work.
               </p>
 
               <div className="flex flex-col gap-4 sm:flex-row">
@@ -42,37 +44,6 @@ export default function Home() {
           {/* RIGHT: Image */}
           <div className="relative h-[320px] lg:h-auto">
             <Image
-              src="/images/banner.avif"
-              alt="Worksphere banner"
-              fill
-              priority
-              className="object-cover"
-              style={{ objectPosition: "center top" }}
-            />
-          </div>
-
-          {/* CENTER GRADIENT DIVIDER */}
-          <div
-            className="
-              pointer-events-none
-              absolute
-              top-0
-              bottom-0
-              left-1/2
-              z-30
-              hidden
-              w-[35px]
-              -translate-x-1/2
-              bg-gradient-to-r
-              from-[rgb(75,78,61)]
-              to-transparent
-              lg:block
-            "
-          />
-        </div>
-      </section>
-
-
 
       {/* Services Preview */}
       <section className="py-16 bg-white">
