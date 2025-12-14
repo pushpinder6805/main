@@ -51,8 +51,8 @@ section.relative.w-full.overflow-hidden a.bg-blue-600 {
   color: #ffffff;
   border: none;
   border-radius: 30px;
-  padding: 10px 30px;
-  font-size: 1.6rem;
+  padding: 8px 20px;
+  font-size: 17px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
