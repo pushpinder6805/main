@@ -25,18 +25,12 @@ export default function Home() {
 
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Link
-                  href="/contact"
+                  href="https://test.workspherepulse.com/"
                   className="rounded-md bg-blue-600 px-6 py-3 text-center font-bold text-white transition-colors hover:bg-blue-700"
                 >
-                  Request Service
+                  Join Workspherepulse
                 </Link>
-
-                <Link
-                  href="/services"
-                  className="rounded-md bg-white px-6 py-3 text-center font-bold text-blue-600 transition-colors hover:bg-gray-100"
-                >
-                  Our Services
-                </Link>
+                
               </div>
             </div>
           </div>
