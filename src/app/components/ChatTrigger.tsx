@@ -1,10 +1,16 @@
 "use client"
 
+import { useEffect } from 'react';
+
 type ChatTriggerProps = {
   variant?: 'primary' | 'link';
 };
 
 export default function ChatTrigger({ variant = 'primary' }: ChatTriggerProps) {
+  useEffect(() => {
+    console.log('ChatTrigger mounted, variant:', variant);
+  }, [variant]);
+
   const openChat = (e: React.MouseEvent) => {
     e.preventDefault();
     console.log('ChatTrigger clicked, dispatching openLiveChat event');
