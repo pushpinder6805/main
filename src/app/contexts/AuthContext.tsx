@@ -28,7 +28,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     initializeAuth();
-  }, []);
+
+    const interval = setInterval(() => {
+      const discourseCookie = getCookie('discourse_user');
+      if (discourseCookie && !user) {
+        try {
+          const userData = JSON.parse(decodeURIComponent(discourseCookie));
+          localStorage.setItem('discourse_user', JSON.stringify(userData));
+          setUser(userData);
+        } catch (e) {
+          console.error('Error parsing discourse cookie:', e);
+        }
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [user]);
 
   const initializeAuth = () => {
     const discourseCookie = getCookie('discourse_user');

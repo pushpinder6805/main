@@ -2,15 +2,29 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useProgramAuth } from '@/app/contexts/ProgramAuthContext';
-import { apiClient, Advisor } from '@/lib/api-client';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
+
+interface Advisor {
+  id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+  about_me: string;
+  language: string;
+  timezone: string;
+  rate: number;
+  skills: string[];
+  rating: number;
+  reviews_count: number;
+}
 
 export default function AdvisorProfilePage() {
   const params = useParams();
   const router = useRouter();
-  const { user } = useProgramAuth();
+  const { user } = useAuth();
   const advisorId = parseInt(params.id as string);
 
   const [advisor, setAdvisor] = useState<Advisor | null>(null);
@@ -27,9 +41,14 @@ export default function AdvisorProfilePage() {
 
   const loadAdvisor = async () => {
     setLoading(true);
-    const { data } = await apiClient.getAdvisors();
+    const { data } = await supabase
+      .from('advisors')
+      .select('*')
+      .eq('id', params.id)
+      .maybeSingle();
+
     if (data) {
-      const foundAdvisor = data.find((a) => a.id === advisorId);
+      const foundAdvisor = data;
       if (foundAdvisor) {
         setAdvisor(foundAdvisor);
       }
@@ -50,31 +69,29 @@ export default function AdvisorProfilePage() {
       }
 
       const scheduledAt = `${selectedDate}T${selectedTime}:00`;
-      const { data, error } = await apiClient.createAppointmentOrder(
-        advisorId,
-        scheduledAt,
-        duration
-      );
+
+      const { error } = await supabase
+        .from('appointments')
+        .insert({
+          advisor_id: params.id,
+          user_id: user.username,
+          scheduled_at: scheduledAt,
+          duration: duration,
+          status: 'confirmed',
+          meeting_link: '',
+          notes: '',
+        });
 
       if (error) {
-        alert(`Error: ${error}`);
+        alert(`Error: ${error.message}`);
         return;
       }
 
-      if (data?.payment_url) {
-        window.location.href = data.payment_url;
-      }
+      alert('Appointment booked successfully!');
+      router.push('/program/appointments');
     } else {
-      const { data, error } = await apiClient.createConversationOrder(advisorId, duration);
-
-      if (error) {
-        alert(`Error: ${error}`);
-        return;
-      }
-
-      if (data?.payment_url) {
-        window.location.href = data.payment_url;
-      }
+      alert('Conversation booking coming soon!');
+      setShowBookingModal(false);
     }
   };
 
@@ -129,7 +146,7 @@ export default function AdvisorProfilePage() {
             />
             <div>
               <h1 className="text-4xl font-bold mb-2">{advisor.name}</h1>
-              <p className="text-xl text-blue-100">@{advisor.username}</p>
+              <p className="text-xl text-blue-100">{advisor.email}</p>
               <div className="flex items-center gap-4 mt-3">
                 <span className="bg-white bg-opacity-20 px-4 py-2 rounded-full font-semibold">
                   ${advisor.rate}/hour
@@ -168,19 +185,11 @@ export default function AdvisorProfilePage() {
               </div>
             </div>
 
-            {advisor.availabilities.length > 0 && (
+            {false && advisor && (
               <div className="bg-white rounded-lg shadow-md p-6">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Availability</h2>
                 <div className="space-y-2">
-                  {advisor.availabilities.map((avail) => (
-                    <div key={avail.id} className="flex items-center gap-3 text-gray-700">
-                      <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span className="font-medium">{daysOfWeek[avail.day_of_week]}:</span>
-                      <span>{avail.start_time} - {avail.end_time}</span>
-                    </div>
-                  ))}
+                  <p>Availability information coming soon</p>
                 </div>
               </div>
             )}

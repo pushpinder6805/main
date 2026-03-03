@@ -1,13 +1,29 @@
 "use client"
 
 import { useState, useEffect, useRef } from 'react';
-import { useProgramAuth } from '@/app/contexts/ProgramAuthContext';
-import { apiClient, Conversation, Message } from '@/lib/api-client';
+import { useAuth } from '@/app/contexts/AuthContext';
 import Link from 'next/link';
 import Image from 'next/image';
 
+interface Conversation {
+  id: string;
+  name: string;
+  avatar: string;
+  lastMessage: string;
+  timestamp: string;
+  unread: number;
+}
+
+interface Message {
+  id: string;
+  sender: string;
+  content: string;
+  timestamp: string;
+  is_mine: boolean;
+}
+
 export default function MessagesPage() {
-  const { user, isLoading } = useProgramAuth();
+  const { user, isLoading } = useAuth();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -41,33 +57,18 @@ export default function MessagesPage() {
 
   const loadConversations = async () => {
     setLoading(true);
-    const { data } = await apiClient.getConversations();
-    if (data) {
-      setConversations(data);
-    } else {
-      setConversations([]);
-    }
+    setConversations([]);
     setLoading(false);
   };
 
   const loadMessages = async () => {
     if (!selectedConversation) return;
-    const { data } = await apiClient.getMessages(selectedConversation.id);
-    if (data) {
-      setMessages(data);
-    } else {
-      setMessages([]);
-    }
+    setMessages([]);
   };
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedConversation) return;
-
-    const { error } = await apiClient.sendMessage(selectedConversation.id, newMessage);
-    if (error) {
-      alert(`Error: ${error}`);
-      return;
-    }
+    alert('Messaging functionality coming soon!');
 
     setNewMessage('');
     loadMessages();
@@ -111,9 +112,7 @@ export default function MessagesPage() {
             </div>
           ) : (
             conversations.map((conv) => {
-              const otherPerson = user.is_advisor
-                ? { name: conv.user_name, avatar: conv.user_avatar }
-                : { name: conv.advisor_name, avatar: conv.advisor_avatar };
+              const otherPerson = { name: conv.name, avatar: conv.avatar };
 
               return (
                 <button
@@ -133,11 +132,11 @@ export default function MessagesPage() {
                     />
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-800 truncate">{otherPerson.name}</p>
-                      <p className="text-xs text-gray-500">{conv.duration} min session</p>
+                      <p className="text-xs text-gray-500">Chat session</p>
                     </div>
                   </div>
-                  {conv.last_message && (
-                    <p className="text-sm text-gray-600 truncate">{conv.last_message}</p>
+                  {conv.lastMessage && (
+                    <p className="text-sm text-gray-600 truncate">{conv.lastMessage}</p>
                   )}
                 </button>
               );
@@ -160,13 +159,13 @@ export default function MessagesPage() {
           <>
             <div className="p-4 border-b border-gray-200 bg-white">
               <h2 className="text-xl font-bold text-gray-800">
-                {user.is_advisor ? selectedConversation.user_name : selectedConversation.advisor_name}
+                {selectedConversation.name}
               </h2>
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
               {messages.map((msg) => {
-                const isMyMessage = msg.sender_id === user.id;
+                const isMyMessage = msg.is_mine;
                 return (
                   <div
                     key={msg.id}
@@ -180,18 +179,18 @@ export default function MessagesPage() {
                       }`}
                     >
                       <p className="text-xs font-semibold mb-1 opacity-75">
-                        {msg.sender_name}
+                        {msg.sender}
                       </p>
                       {msg.content && (
                         <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
                       )}
-                      {msg.audio_url && (
+                      {false && (
                         <audio controls className="mt-2 w-full">
-                          <source src={msg.audio_url} />
+                          <source src="" />
                         </audio>
                       )}
                       <p className="text-xs mt-1 opacity-60">
-                        {new Date(msg.created_at).toLocaleTimeString([], {
+                        {new Date(msg.timestamp).toLocaleTimeString([], {
                           hour: '2-digit',
                           minute: '2-digit',
                         })}
