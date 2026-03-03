@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LiveChat from "./components/LiveChat";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ProgramAuthProvider } from "./contexts/ProgramAuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,10 +31,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <LiveChat />
+          <ProgramAuthProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <LiveChat />
+          </ProgramAuthProvider>
         </AuthProvider>
       </body>
     </html>
