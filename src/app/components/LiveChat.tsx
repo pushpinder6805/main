@@ -77,7 +77,10 @@ export default function LiveChat() {
 
     setIsLoading(true);
     try {
-      console.log('Starting conversation...');
+      console.log('Starting conversation with:', { userName, userEmail });
+      console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+      console.log('Supabase Key exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
       const { data, error } = await supabase
         .from('chat_conversations')
         .insert({
@@ -91,8 +94,13 @@ export default function LiveChat() {
       console.log('Insert result:', { data, error });
 
       if (error) {
-        console.error('Supabase error:', error);
-        throw error;
+        console.error('Supabase error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        throw new Error(`Database error: ${error.message} (${error.code || 'no code'})`);
       }
 
       if (!data) {
@@ -115,11 +123,12 @@ export default function LiveChat() {
 
       if (msgError) {
         console.error('Message error:', msgError);
-        throw msgError;
+        throw new Error(`Failed to send welcome message: ${msgError.message}`);
       }
     } catch (error) {
       console.error('Error starting conversation:', error);
-      alert(`Failed to start chat: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      alert(`Failed to start chat: ${errorMessage}`);
     } finally {
       setIsLoading(false);
     }

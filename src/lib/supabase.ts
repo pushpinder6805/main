@@ -1,13 +1,21 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables');
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Missing Supabase environment variables', {
+      url: supabaseUrl,
+      key: supabaseAnonKey ? 'present' : 'missing'
+    });
+    throw new Error('Supabase configuration is missing');
+  }
+
+  return createClient(supabaseUrl, supabaseAnonKey);
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = getSupabaseClient();
 
 export type ChatConversation = {
   id: string;
