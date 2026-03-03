@@ -4,7 +4,7 @@ export default function ServiceGuarantee() {
       {/* Header */}
       <section className="bg-blue-600 py-16 text-white">
         <div className="container mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-4">Product & Service Delivery Guarantee</h1>
+          <h1 className="text-4xl font-bold mb-4">Cancellations and Refunds Policy</h1>
           <p className="text-xl max-w-2xl">Our commitment to ensuring quality service delivery for all users.</p>
         </div>
       </section>

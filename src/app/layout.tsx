@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Plumbing Pros | Professional Plumbing Services",
-  description: "Professional plumbing services for residential and commercial properties. Available 24/7 for all your plumbing needs.",
+  title: "WorkspherePulse | Professional Meeting Platform",
+  description: "Connect with professionals for consultations and meetings. Book verified experts for personalized sessions.",
 };
 
 export default function RootLayout({
