@@ -3,10 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useAuth } from "@/app/contexts/AuthContext";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [programDropdownOpen, setProgramDropdownOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   return (
     <header className="bg-white shadow-sm">
@@ -76,18 +78,36 @@ export default function Header() {
           </nav>
           
           <div className="flex items-center gap-4">
-            <Link
-              href="/api/auth/discourse/login"
-              className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-            >
-              Login
-            </Link>
-            <Link
-              href="/api/auth/discourse/login"
-              className="hidden md:block bg-white hover:bg-gray-100 text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-lg font-medium transition-colors"
-            >
-              Sign Up
-            </Link>
+            {user ? (
+              <>
+                <div className="hidden md:flex items-center gap-4">
+                  <span className="text-gray-700 font-medium">
+                    {user.name || user.username}
+                  </span>
+                  <button
+                    onClick={logout}
+                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/api/auth/discourse/login"
+                  className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/api/auth/discourse/login"
+                  className="hidden md:block bg-white hover:bg-gray-100 text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-lg font-medium transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
 
             <button
               className="md:hidden text-gray-700"
@@ -158,22 +178,39 @@ export default function Header() {
               >
                 Contact
               </Link>
-              <div className="flex flex-col gap-2">
-                <Link
-                  href="/api/auth/discourse/login"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/api/auth/discourse/login"
-                  className="bg-white hover:bg-gray-100 text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-lg font-medium transition-colors text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Sign Up
-                </Link>
-              </div>
+              {user ? (
+                <div className="flex flex-col gap-2">
+                  <div className="text-gray-700 font-medium px-4 py-2">
+                    {user.name || user.username}
+                  </div>
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      logout();
+                    }}
+                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors text-center"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Link
+                    href="/api/auth/discourse/login"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors text-center"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/api/auth/discourse/login"
+                    className="bg-white hover:bg-gray-100 text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-lg font-medium transition-colors text-center"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
             </nav>
           </div>
         )}

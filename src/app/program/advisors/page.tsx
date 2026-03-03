@@ -1,9 +1,23 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { apiClient, Advisor } from '@/lib/api-client';
+import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import Image from 'next/image';
+
+interface Advisor {
+  id: string;
+  user_id: string;
+  name: string;
+  avatar_url: string;
+  about_me: string;
+  language: string;
+  timezone: string;
+  rate: number;
+  skills: string[];
+  rating: number;
+  reviews_count: number;
+}
 
 export default function AdvisorsPage() {
   const [advisors, setAdvisors] = useState<Advisor[]>([]);
@@ -26,30 +40,31 @@ export default function AdvisorsPage() {
   const loadData = async () => {
     setLoading(true);
     setError('');
-    console.log('Loading advisors data...');
 
-    const [advisorsRes, skillsRes] = await Promise.all([
-      apiClient.getAdvisors(),
-      apiClient.getSkills(),
-    ]);
+    try {
+      const { data: advisorsData, error: advisorsError } = await supabase
+        .from('advisors')
+        .select('*')
+        .eq('is_active', true)
+        .order('rating', { ascending: false });
 
-    console.log('Advisors response:', advisorsRes);
-    console.log('Skills response:', skillsRes);
+      if (advisorsError) {
+        console.error('Error loading advisors:', advisorsError);
+        setError(advisorsError.message);
+        setAdvisors([]);
+      } else {
+        setAdvisors(advisorsData || []);
 
-    if (advisorsRes.error) {
-      setError(advisorsRes.error);
-    }
-
-    if (advisorsRes.data) {
-      console.log('Setting advisors:', advisorsRes.data);
-      setAdvisors(advisorsRes.data);
-    } else {
-      console.log('No advisors data received');
+        const allSkills = new Set<string>();
+        (advisorsData || []).forEach((advisor) => {
+          advisor.skills?.forEach((skill: string) => allSkills.add(skill));
+        });
+        setSkills(Array.from(allSkills));
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      setError('Failed to load advisors');
       setAdvisors([]);
-    }
-
-    if (skillsRes.data) {
-      setSkills(skillsRes.data);
     }
 
     setLoading(false);
@@ -68,7 +83,7 @@ export default function AdvisorsPage() {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter((advisor) =>
         advisor.name.toLowerCase().includes(query) ||
-        advisor.username.toLowerCase().includes(query) ||
+        advisor.user_id.toLowerCase().includes(query) ||
         advisor.about_me.toLowerCase().includes(query)
       );
     }
@@ -227,7 +242,7 @@ export default function AdvisorsPage() {
                     />
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-gray-800">{advisor.name}</h3>
-                      <p className="text-sm text-gray-600">@{advisor.username}</p>
+                      <p className="text-sm text-gray-600">@{advisor.user_id}</p>
                       <div className="flex items-center gap-2 mt-1">
                         {advisor.rating > 0 && (
                           <div className="flex items-center gap-1">
