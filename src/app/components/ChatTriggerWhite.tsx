@@ -1,7 +1,8 @@
 "use client"
 
 export default function ChatTriggerWhite() {
-  const openChat = () => {
+  const openChat = (e: React.MouseEvent) => {
+    e.preventDefault();
     const event = new CustomEvent('openLiveChat');
     window.dispatchEvent(event);
   };

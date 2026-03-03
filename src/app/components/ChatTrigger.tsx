@@ -5,7 +5,8 @@ type ChatTriggerProps = {
 };
 
 export default function ChatTrigger({ variant = 'primary' }: ChatTriggerProps) {
-  const openChat = () => {
+  const openChat = (e: React.MouseEvent) => {
+    e.preventDefault();
     const event = new CustomEvent('openLiveChat');
     window.dispatchEvent(event);
   };

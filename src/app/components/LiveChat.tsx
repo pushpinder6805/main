@@ -12,7 +12,12 @@ export default function LiveChat() {
   const [userEmail, setUserEmail] = useState('');
   const [isStarted, setIsStarted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -23,7 +28,10 @@ export default function LiveChat() {
   }, [messages]);
 
   useEffect(() => {
-    const handleOpenChat = () => {
+    if (!isMounted) return;
+
+    const handleOpenChat = (e: Event) => {
+      e.preventDefault();
       setIsOpen(true);
     };
 
@@ -32,7 +40,7 @@ export default function LiveChat() {
     return () => {
       window.removeEventListener('openLiveChat', handleOpenChat);
     };
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
     if (!conversationId) return;
@@ -138,6 +146,10 @@ export default function LiveChat() {
   const openChat = () => {
     setIsOpen(true);
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <>
