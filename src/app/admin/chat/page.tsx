@@ -1,16 +1,37 @@
 "use client"
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { supabase, ChatMessage, ChatConversation } from '@/lib/supabase';
+import { useAuth } from '@/app/contexts/AuthContext';
 
-export default function AdminChatPage() {
+function AdminChatContent() {
+  const { user, isAdmin, isLoading, login } = useAuth();
+  const searchParams = useSearchParams();
   const [conversations, setConversations] = useState<ChatConversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [supportName, setSupportName] = useState('');
-  const [isNameSet, setIsNameSet] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (searchParams.get('auth') === 'success') {
+      const cookieUser = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('discourse_user='))
+        ?.split('=')[1];
+
+      if (cookieUser) {
+        try {
+          const userData = JSON.parse(decodeURIComponent(cookieUser));
+          localStorage.setItem('discourse_user', JSON.stringify(userData));
+          window.location.href = '/admin/chat';
+        } catch (e) {
+          console.error('Failed to parse user data:', e);
+        }
+      }
+    }
+  }, [searchParams]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -99,13 +120,13 @@ export default function AdminChatPage() {
   };
 
   const sendMessage = async () => {
-    if (!newMessage.trim() || !selectedConversation || !supportName.trim()) return;
+    if (!newMessage.trim() || !selectedConversation || !user) return;
 
     const message = {
       conversation_id: selectedConversation,
       message: newMessage,
       sender_type: 'support' as const,
-      sender_name: supportName,
+      sender_name: user.name || user.username,
     };
 
     try {
@@ -150,41 +171,48 @@ export default function AdminChatPage() {
     }
   };
 
-  if (!isNameSet) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Admin Chat Dashboard</h1>
-          <p className="text-gray-600 mb-6">Enter your name to start responding to customer chats</p>
-          <div>
-            <label htmlFor="support-name" className="block text-sm font-medium text-gray-700 mb-2">
-              Your Name
-            </label>
-            <input
-              id="support-name"
-              type="text"
-              value={supportName}
-              onChange={(e) => setSupportName(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter' && supportName.trim()) {
-                  setIsNameSet(true);
-                }
-              }}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 mb-4"
-              placeholder="Support Agent Name"
-            />
-            <button
-              onClick={() => {
-                if (supportName.trim()) {
-                  setIsNameSet(true);
-                }
-              }}
-              disabled={!supportName.trim()}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-md transition-colors"
-            >
-              Continue
-            </button>
-          </div>
+        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+          <svg className="w-16 h-16 mx-auto mb-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Admin Access Required</h1>
+          <p className="text-gray-600 mb-6">Please log in with your Discourse account to access the admin chat dashboard.</p>
+          <button
+            onClick={login}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md transition-colors"
+          >
+            Login with Discourse
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+          <svg className="w-16 h-16 mx-auto mb-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Admin Permission Required</h1>
+          <p className="text-gray-600 mb-2">Hello, {user.name || user.username}</p>
+          <p className="text-gray-600 mb-6">You need admin or moderator permissions to access this page.</p>
+          <p className="text-sm text-gray-500">If you believe this is an error, please contact a site administrator.</p>
         </div>
       </div>
     );
@@ -197,7 +225,7 @@ export default function AdminChatPage() {
       <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-4 border-b border-gray-200 bg-blue-600 text-white">
           <h1 className="text-xl font-bold">Chat Dashboard</h1>
-          <p className="text-sm text-blue-100">Logged in as {supportName}</p>
+          <p className="text-sm text-blue-100">Logged in as {user.name || user.username}</p>
         </div>
 
         <div className="flex-1 overflow-y-auto">
@@ -343,5 +371,20 @@ export default function AdminChatPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AdminChatPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <AdminChatContent />
+    </Suspense>
   );
 }
