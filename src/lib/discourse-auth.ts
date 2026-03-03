@@ -14,10 +14,14 @@ const DISCOURSE_URL = 'https://community.workspherepulse.com';
 const DISCOURSE_CONNECT_SECRET = process.env.DISCOURSE_CONNECT_SECRET || '';
 
 export function getDiscourseLoginUrl(returnUrl: string): string {
+  if (!DISCOURSE_CONNECT_SECRET) {
+    throw new Error('DISCOURSE_CONNECT_SECRET is not configured');
+  }
+
   const payload = Buffer.from(`return_sso_url=${encodeURIComponent(returnUrl)}`).toString('base64');
   const sig = createHmac('sha256', DISCOURSE_CONNECT_SECRET).update(payload).digest('hex');
 
-  return `${DISCOURSE_URL}/session/sso_provider?sso=${encodeURIComponent(payload)}&sig=${sig}`;
+  return `${DISCOURSE_URL}/session/sso_provider?sso=${payload}&sig=${sig}`;
 }
 
 export function verifyDiscoursePayload(sso: string, sig: string): DiscourseUser | null {
