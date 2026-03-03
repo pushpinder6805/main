@@ -30,8 +30,7 @@ export default function LiveChat() {
   useEffect(() => {
     if (!isMounted) return;
 
-    const handleOpenChat = (e: Event) => {
-      e.preventDefault();
+    const handleOpenChat = () => {
       setIsOpen(true);
     };
 
