@@ -1,13 +1,49 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { useProgramAuth } from '@/app/contexts/ProgramAuthContext';
-import { apiClient, Appointment, Transaction, AdvisorProfile } from '@/lib/api-client';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import Image from 'next/image';
 
+interface AdvisorProfile {
+  id: string;
+  user_id: string;
+  name: string;
+  email: string;
+  avatar_url: string;
+  about_me: string;
+  language: string;
+  timezone: string;
+  rate: number;
+  skills: string[];
+  rating: number;
+  reviews_count: number;
+  wallet_balance: number;
+}
+
+interface Appointment {
+  id: string;
+  user_id: string;
+  user_name: string;
+  user_avatar: string;
+  scheduled_at: string;
+  duration: number;
+  status: string;
+  meeting_link: string;
+  notes: string;
+}
+
+interface Transaction {
+  id: string;
+  amount: number;
+  type: string;
+  created_at: string;
+  description: string;
+}
+
 export default function AdvisorDashboard() {
-  const { user, isLoading, isAdvisor } = useProgramAuth();
+  const { user, isLoading, isAdvisor } = useAuth();
   const [advisorProfile, setAdvisorProfile] = useState<AdvisorProfile | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -23,22 +59,29 @@ export default function AdvisorDashboard() {
 
   const loadAdvisorData = async () => {
     setLoadingData(true);
-    const [profileRes, appointmentsRes, transactionsRes] = await Promise.all([
-      apiClient.getAdvisorProfile(),
-      apiClient.getAppointments(),
-      apiClient.getTransactions(),
-    ]);
 
-    if (profileRes.data) {
-      setAdvisorProfile(profileRes.data);
-    }
+    try {
+      const { data: profile } = await supabase
+        .from('advisors')
+        .select('*')
+        .eq('user_id', user?.username || '')
+        .maybeSingle();
 
-    if (appointmentsRes.data) {
-      setAppointments(appointmentsRes.data);
-    }
+      if (profile) {
+        setAdvisorProfile(profile);
 
-    if (transactionsRes.data) {
-      setTransactions(transactionsRes.data.slice(0, 10));
+        const { data: appointmentsData } = await supabase
+          .from('appointments')
+          .select('*')
+          .eq('advisor_id', profile.id)
+          .order('scheduled_at', { ascending: false });
+
+        setAppointments(appointmentsData || []);
+      }
+
+      setTransactions([]);
+    } catch (error) {
+      console.error('Error loading advisor data:', error);
     }
 
     setLoadingData(false);
@@ -56,16 +99,9 @@ export default function AdvisorDashboard() {
       return;
     }
 
-    const { data, error } = await apiClient.requestWithdrawal(amount);
-    if (error) {
-      alert(`Error: ${error}`);
-      return;
-    }
-
-    alert(data?.message || 'Withdrawal request submitted successfully');
+    alert('Withdrawal functionality coming soon!');
     setShowWithdrawModal(false);
     setWithdrawAmount('');
-    loadAdvisorData();
   };
 
   if (isLoading || loadingData) {
@@ -98,7 +134,7 @@ export default function AdvisorDashboard() {
   );
 
   const completedAppointments = appointments.filter((a) => a.status === 'completed');
-  const totalEarnings = completedAppointments.reduce((sum, a) => sum + a.total_cost, 0);
+  const totalEarnings = completedAppointments.reduce((sum, a) => sum + ((advisorProfile?.rate || 0) * (a.duration / 60)), 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -235,7 +271,7 @@ export default function AdvisorDashboard() {
                         <p className="text-sm text-gray-500">{appointment.duration} minutes</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-bold text-green-600">${appointment.total_cost.toFixed(2)}</p>
+                        <p className="font-bold text-green-600">${((advisorProfile?.rate || 0) * (appointment.duration / 60)).toFixed(2)}</p>
                         <Link
                           href={`/program/appointments`}
                           className="text-sm text-blue-600 hover:underline"
@@ -272,7 +308,7 @@ export default function AdvisorDashboard() {
                         {transaction.amount > 0 ? '+' : ''}${Math.abs(transaction.amount).toFixed(2)}
                       </p>
                       <p className="text-xs text-gray-500">
-                        Balance: ${transaction.balance_after.toFixed(2)}
+                        {new Date(transaction.created_at).toLocaleDateString()}
                       </p>
                     </div>
                   </div>

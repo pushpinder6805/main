@@ -1,13 +1,30 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { useProgramAuth } from '@/app/contexts/ProgramAuthContext';
-import { apiClient, Appointment } from '@/lib/api-client';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import Image from 'next/image';
 
+interface Appointment {
+  id: string;
+  advisor_id: string;
+  user_id: string;
+  user_name: string;
+  user_avatar: string;
+  scheduled_at: string;
+  duration: number;
+  status: string;
+  meeting_link: string;
+  notes: string;
+  advisors?: {
+    name: string;
+    avatar_url: string;
+  };
+}
+
 export default function AppointmentsPage() {
-  const { user, isLoading, isAdvisor } = useProgramAuth();
+  const { user, isLoading, isAdvisor } = useAuth();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'completed' | 'cancelled'>('all');
   const [loading, setLoading] = useState(true);
@@ -30,21 +47,51 @@ export default function AppointmentsPage() {
 
   const loadAppointments = async () => {
     setLoading(true);
-    const { data } = await apiClient.getAppointments();
-    if (data) {
-      setAppointments(data);
-    } else {
+
+    try {
+      if (isAdvisor) {
+        const { data: advisorData } = await supabase
+          .from('advisors')
+          .select('id')
+          .eq('user_id', user?.username || '')
+          .maybeSingle();
+
+        if (advisorData) {
+          const { data } = await supabase
+            .from('appointments')
+            .select('*')
+            .eq('advisor_id', advisorData.id)
+            .order('scheduled_at', { ascending: false });
+
+          setAppointments(data || []);
+        }
+      } else {
+        const { data } = await supabase
+          .from('appointments')
+          .select('*, advisors(name, avatar_url)')
+          .eq('user_id', user?.username || '')
+          .order('scheduled_at', { ascending: false });
+
+        setAppointments(data || []);
+      }
+    } catch (error) {
+      console.error('Error loading appointments:', error);
       setAppointments([]);
     }
+
     setLoading(false);
   };
 
   const handleCancel = async () => {
     if (!selectedAppointment) return;
 
-    const { error } = await apiClient.cancelAppointment(selectedAppointment.id);
+    const { error } = await supabase
+      .from('appointments')
+      .update({ status: 'cancelled' })
+      .eq('id', selectedAppointment.id);
+
     if (error) {
-      alert(`Error: ${error}`);
+      alert(`Error: ${error.message}`);
       return;
     }
 
@@ -61,9 +108,13 @@ export default function AppointmentsPage() {
     }
 
     const scheduledAt = `${newDate}T${newTime}:00`;
-    const { error } = await apiClient.rescheduleAppointment(selectedAppointment.id, scheduledAt);
+    const { error } = await supabase
+      .from('appointments')
+      .update({ scheduled_at: scheduledAt })
+      .eq('id', selectedAppointment.id);
+
     if (error) {
-      alert(`Error: ${error}`);
+      alert(`Error: ${error.message}`);
       return;
     }
 
@@ -78,13 +129,8 @@ export default function AppointmentsPage() {
   const handleReview = async () => {
     if (!selectedAppointment) return;
 
-    const { error } = await apiClient.reviewAppointment(selectedAppointment.id, rating, review);
-    if (error) {
-      alert(`Error: ${error}`);
-      return;
-    }
+    alert('Review functionality coming soon!');
 
-    alert('Review submitted successfully');
     setShowReviewModal(false);
     setSelectedAppointment(null);
     setRating(5);
@@ -93,16 +139,10 @@ export default function AppointmentsPage() {
   };
 
   const handleJoinMeeting = async (appointment: Appointment) => {
-    const { data, error } = await apiClient.getAppointmentZoomLinks(appointment.id);
-    if (error || !data) {
-      alert(`Error getting meeting link: ${error}`);
-      return;
-    }
-
-    if (isAdvisor && data.start_url) {
-      window.open(data.start_url, '_blank');
+    if (appointment.meeting_link) {
+      window.open(appointment.meeting_link, '_blank');
     } else {
-      window.open(data.join_url, '_blank');
+      alert('Meeting link not available');
     }
   };
 
@@ -215,10 +255,10 @@ export default function AppointmentsPage() {
             {filteredAppointments.map((appointment) => {
               const isUpcoming = appointment.status === 'confirmed' && new Date(appointment.scheduled_at) > new Date();
               const isPast = new Date(appointment.scheduled_at) < new Date();
-              const canReview = appointment.status === 'completed' && !appointment.rating && !isAdvisor;
+              const canReview = appointment.status === 'completed' && !isAdvisor;
               const otherPerson = isAdvisor
                 ? { name: appointment.user_name, avatar: appointment.user_avatar }
-                : { name: appointment.advisor_name, avatar: appointment.advisor_avatar };
+                : { name: appointment.advisors?.name || 'Advisor', avatar: appointment.advisors?.avatar_url || '' };
 
               return (
                 <div key={appointment.id} className="bg-white rounded-lg shadow-md p-6">
@@ -267,20 +307,20 @@ export default function AppointmentsPage() {
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
-                          <span className="font-medium">${appointment.total_cost.toFixed(2)}</span>
+                          <span className="font-medium">{appointment.duration} min</span>
                         </div>
-                        {appointment.rating && (
+                        {false && (
                           <div className="flex items-center gap-2 text-gray-700">
                             <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
-                            <span>{appointment.rating}/5</span>
+                            <span>N/A</span>
                           </div>
                         )}
                       </div>
-                      {appointment.review && (
+                      {false && (
                         <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                          <p className="text-sm text-gray-700">{appointment.review}</p>
+                          <p className="text-sm text-gray-700">Review coming soon</p>
                         </div>
                       )}
                       <div className="flex gap-2 flex-wrap">

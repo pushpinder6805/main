@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useProgramAuth } from '@/app/contexts/ProgramAuthContext';
-import { apiClient } from '@/lib/api-client';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 export default function OnboardPage() {
   const router = useRouter();
-  const { user } = useProgramAuth();
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     about_me: '',
     timezone: 'America/New_York',
@@ -64,30 +64,45 @@ export default function OnboardPage() {
 
     setLoading(true);
 
-    const submitData = new FormData();
-    submitData.append('input', JSON.stringify({
-      about_me: formData.about_me,
-      timezone: formData.timezone,
-      language: formData.language,
-      availabilities,
-      rate: parseFloat(formData.rate),
-      skills: formData.skills,
-      privacy_accepted: true,
-    }));
+    try {
+      const { data: advisor, error: insertError } = await supabase
+        .from('advisors')
+        .insert({
+          user_id: user.username,
+          name: user.name || user.username,
+          email: user.email,
+          avatar_url: user.avatar_url || '',
+          about_me: formData.about_me,
+          timezone: formData.timezone,
+          language: formData.language,
+          rate: parseFloat(formData.rate),
+          skills: formData.skills,
+        })
+        .select()
+        .single();
 
-    if (avatar) {
-      submitData.append('avatar', avatar);
-    }
+      if (insertError) {
+        setError(`Error: ${insertError.message}`);
+        setLoading(false);
+        return;
+      }
 
-    const { error: apiError } = await apiClient.onboardAdvisor(submitData);
+      if (availabilities.length > 0 && advisor) {
+        const availabilityInserts = availabilities.map(a => ({
+          advisor_id: advisor.id,
+          day_of_week: a.day_of_week,
+          start_time: a.start_time,
+          end_time: a.end_time,
+        }));
 
-    if (apiError) {
-      setError(`Error: ${apiError}`);
+        await supabase.from('advisor_availabilities').insert(availabilityInserts);
+      }
+
+      router.push('/program/advisor-dashboard');
+    } catch (err) {
+      setError('Failed to submit onboarding');
       setLoading(false);
-      return;
     }
-
-    router.push('/program/advisor-dashboard');
   };
 
   if (!user) {

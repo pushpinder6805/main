@@ -1,13 +1,35 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { useProgramAuth } from '@/app/contexts/ProgramAuthContext';
-import { apiClient, Appointment, Transaction } from '@/lib/api-client';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import Image from 'next/image';
 
+interface Appointment {
+  id: string;
+  advisor_id: string;
+  scheduled_at: string;
+  duration: number;
+  status: string;
+  meeting_link: string;
+  notes: string;
+  advisors?: {
+    name: string;
+    avatar_url: string;
+  };
+}
+
+interface Transaction {
+  id: string;
+  amount: number;
+  type: string;
+  created_at: string;
+  description: string;
+}
+
 export default function UserDashboard() {
-  const { user, isLoading, isAdvisor } = useProgramAuth();
+  const { user, isLoading, isAdvisor } = useAuth();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [refillAmount, setRefillAmount] = useState('');
@@ -24,25 +46,20 @@ export default function UserDashboard() {
 
   const loadDashboardData = async () => {
     setLoadingData(true);
-    console.log('Loading dashboard data for user:', user);
 
-    const [appointmentsRes, transactionsRes] = await Promise.all([
-      apiClient.getAppointments(),
-      apiClient.getTransactions(),
-    ]);
+    try {
+      const { data: appointmentsData } = await supabase
+        .from('appointments')
+        .select('*, advisors(name, avatar_url)')
+        .eq('user_id', user?.username || '')
+        .order('scheduled_at', { ascending: false })
+        .limit(5);
 
-    console.log('Appointments:', appointmentsRes);
-    console.log('Transactions:', transactionsRes);
-
-    if (appointmentsRes.data) {
-      setAppointments(appointmentsRes.data.slice(0, 5));
-    } else {
+      setAppointments(appointmentsData || []);
+      setTransactions([]);
+    } catch (error) {
+      console.error('Error loading dashboard data:', error);
       setAppointments([]);
-    }
-
-    if (transactionsRes.data) {
-      setTransactions(transactionsRes.data.slice(0, 10));
-    } else {
       setTransactions([]);
     }
 
@@ -56,15 +73,8 @@ export default function UserDashboard() {
       return;
     }
 
-    const { data, error } = await apiClient.requestRefill(amount);
-    if (error) {
-      alert(`Error: ${error}`);
-      return;
-    }
-
-    if (data?.payment_url) {
-      window.location.href = data.payment_url;
-    }
+    alert('Refill functionality coming soon!');
+    setShowRefillModal(false);
   };
 
   if (isLoading || loadingData) {
@@ -202,14 +212,14 @@ export default function UserDashboard() {
                   <div key={appointment.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                     <div className="flex items-center gap-4">
                       <Image
-                        src={appointment.advisor_avatar || '/images/logo.png'}
-                        alt={appointment.advisor_name}
+                        src={appointment.advisors?.avatar_url || '/images/logo.png'}
+                        alt={appointment.advisors?.name || 'Advisor'}
                         width={48}
                         height={48}
                         className="rounded-full"
                       />
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-800">{appointment.advisor_name}</h3>
+                        <h3 className="font-semibold text-gray-800">{appointment.advisors?.name || 'Advisor'}</h3>
                         <p className="text-sm text-gray-600">
                           {new Date(appointment.scheduled_at).toLocaleString()}
                         </p>
@@ -250,7 +260,7 @@ export default function UserDashboard() {
                         {transaction.amount > 0 ? '+' : ''}${Math.abs(transaction.amount).toFixed(2)}
                       </p>
                       <p className="text-xs text-gray-500">
-                        Balance: ${transaction.balance_after.toFixed(2)}
+                        {new Date(transaction.created_at).toLocaleDateString()}
                       </p>
                     </div>
                   </div>

@@ -51,12 +51,14 @@ export async function GET(request: NextRequest) {
     is_admin: role === 'admin',
   };
 
-  let redirectUrl = '/program/dashboard';
+  let redirectUrl = '/';
 
   if (role === 'admin') {
     redirectUrl = '/admin/chat';
   } else if (role === 'advisor') {
     redirectUrl = '/program/advisor-dashboard';
+  } else {
+    redirectUrl = '/program/dashboard';
   }
 
   const response = NextResponse.redirect(new URL(redirectUrl, request.url));
