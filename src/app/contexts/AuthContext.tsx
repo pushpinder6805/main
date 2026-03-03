@@ -4,8 +4,9 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { DiscourseUser } from '@/lib/discourse-auth';
 
 interface AuthContextType {
-  user: DiscourseUser | null;
+  user: (DiscourseUser & { role?: string; is_advisor?: boolean; is_admin?: boolean }) | null;
   isAdmin: boolean;
+  isAdvisor: boolean;
   isLoading: boolean;
   login: () => void;
   logout: () => void;
@@ -13,37 +14,65 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+  return null;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<DiscourseUser | null>(null);
+  const [user, setUser] = useState<(DiscourseUser & { role?: string; is_advisor?: boolean; is_admin?: boolean }) | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('discourse_user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        localStorage.removeItem('discourse_user');
-      }
-    }
-    setIsLoading(false);
+    initializeAuth();
   }, []);
 
+  const initializeAuth = () => {
+    const discourseCookie = getCookie('discourse_user');
+
+    if (discourseCookie) {
+      try {
+        const userData = JSON.parse(decodeURIComponent(discourseCookie));
+        localStorage.setItem('discourse_user', JSON.stringify(userData));
+        setUser(userData);
+      } catch (e) {
+        console.error('Error parsing discourse cookie:', e);
+      }
+    } else {
+      const storedUser = localStorage.getItem('discourse_user');
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          setUser(userData);
+        } catch (e) {
+          localStorage.removeItem('discourse_user');
+        }
+      }
+    }
+
+    setIsLoading(false);
+  };
+
   const login = () => {
-    const returnUrl = `${window.location.origin}/api/auth/discourse/callback`;
-    window.location.href = `/api/auth/discourse/login?return_url=${encodeURIComponent(returnUrl)}`;
+    window.location.href = '/api/auth/discourse/login';
   };
 
   const logout = () => {
     localStorage.removeItem('discourse_user');
+    localStorage.removeItem('worksphere_user');
+    document.cookie = 'discourse_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     setUser(null);
     window.location.href = '/';
   };
 
-  const isAdmin = user?.admin === true || user?.moderator === true;
+  const isAdmin = user?.admin === true || user?.moderator === true || user?.is_admin === true;
+  const isAdvisor = user?.is_advisor === true;
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isAdmin, isAdvisor, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

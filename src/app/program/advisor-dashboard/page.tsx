@@ -151,7 +151,7 @@ export default function AdvisorDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm">Wallet Balance</p>
-                <p className="text-2xl font-bold text-gray-800">${user.wallet_balance.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-gray-800">${(user.wallet_balance || 0).toFixed(2)}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -287,7 +287,7 @@ export default function AdvisorDashboard() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg p-8 max-w-md w-full">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Withdraw Funds</h2>
-            <p className="text-gray-600 mb-2">Available balance: ${user.wallet_balance.toFixed(2)}</p>
+            <p className="text-gray-600 mb-2">Available balance: ${(user.wallet_balance || 0).toFixed(2)}</p>
             <p className="text-sm text-gray-500 mb-6">Minimum withdrawal: $100</p>
             <input
               type="number"

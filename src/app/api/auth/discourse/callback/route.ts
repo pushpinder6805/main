@@ -51,7 +51,15 @@ export async function GET(request: NextRequest) {
     is_admin: role === 'admin',
   };
 
-  const response = NextResponse.redirect(new URL('/program/dashboard', request.url));
+  let redirectUrl = '/program/dashboard';
+
+  if (role === 'admin') {
+    redirectUrl = '/admin/chat';
+  } else if (role === 'advisor') {
+    redirectUrl = '/program/advisor-dashboard';
+  }
+
+  const response = NextResponse.redirect(new URL(redirectUrl, request.url));
 
   response.cookies.set('discourse_user', JSON.stringify(userData), {
     httpOnly: false,

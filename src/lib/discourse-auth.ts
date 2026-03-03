@@ -8,6 +8,10 @@ export interface DiscourseUser {
   admin: boolean;
   moderator: boolean;
   avatar_url?: string;
+  role?: string;
+  is_advisor?: boolean;
+  is_admin?: boolean;
+  wallet_balance?: number;
 }
 
 const DISCOURSE_URL = 'https://community.workspherepulse.com';

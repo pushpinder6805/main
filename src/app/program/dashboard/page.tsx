@@ -126,7 +126,7 @@ export default function UserDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 text-sm">Wallet Balance</p>
-                <p className="text-3xl font-bold text-gray-800">${user.wallet_balance.toFixed(2)}</p>
+                <p className="text-3xl font-bold text-gray-800">${(user.wallet_balance || 0).toFixed(2)}</p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

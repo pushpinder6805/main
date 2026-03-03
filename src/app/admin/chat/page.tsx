@@ -1,37 +1,16 @@
 "use client"
 
 import { useState, useEffect, useRef, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { supabase, ChatMessage, ChatConversation } from '@/lib/supabase';
 import { useAuth } from '@/app/contexts/AuthContext';
 
 function AdminChatContent() {
   const { user, isAdmin, isLoading, login } = useAuth();
-  const searchParams = useSearchParams();
   const [conversations, setConversations] = useState<ChatConversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (searchParams.get('auth') === 'success') {
-      const cookieUser = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('discourse_user='))
-        ?.split('=')[1];
-
-      if (cookieUser) {
-        try {
-          const userData = JSON.parse(decodeURIComponent(cookieUser));
-          localStorage.setItem('discourse_user', JSON.stringify(userData));
-          window.location.href = '/admin/chat';
-        } catch (e) {
-          console.error('Failed to parse user data:', e);
-        }
-      }
-    }
-  }, [searchParams]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

@@ -109,10 +109,20 @@ export interface OrderResponse {
 class ApiClient {
   private getAuthHeader(): string | null {
     if (typeof window === 'undefined') return null;
-    const user = localStorage.getItem('worksphere_user');
+
+    let user = localStorage.getItem('discourse_user');
+    if (!user) {
+      user = localStorage.getItem('worksphere_user');
+    }
+
     if (!user) return null;
-    const userData = JSON.parse(user);
-    return userData.username;
+
+    try {
+      const userData = JSON.parse(user);
+      return userData.username;
+    } catch (e) {
+      return null;
+    }
   }
 
   private async request<T>(

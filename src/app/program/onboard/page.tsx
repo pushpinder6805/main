@@ -7,7 +7,7 @@ import { apiClient } from '@/lib/api-client';
 
 export default function OnboardPage() {
   const router = useRouter();
-  const { user, refreshProfile } = useProgramAuth();
+  const { user } = useProgramAuth();
   const [formData, setFormData] = useState({
     about_me: '',
     timezone: 'America/New_York',
@@ -87,7 +87,6 @@ export default function OnboardPage() {
       return;
     }
 
-    await refreshProfile();
     router.push('/program/advisor-dashboard');
   };
 
