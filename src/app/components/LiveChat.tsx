@@ -47,6 +47,20 @@ export default function LiveChat() {
   useEffect(() => {
     if (!conversationId) return;
 
+    const loadMessages = async () => {
+      const { data } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true });
+
+      if (data) {
+        setMessages(data);
+      }
+    };
+
+    loadMessages();
+
     const channel = supabase
       .channel(`chat:${conversationId}`)
       .on(
@@ -59,7 +73,10 @@ export default function LiveChat() {
         },
         (payload) => {
           const newMsg = payload.new as ChatMessage;
-          setMessages((prev) => [...prev, newMsg]);
+          setMessages((prev) => {
+            if (prev.some(m => m.id === newMsg.id)) return prev;
+            return [...prev, newMsg];
+          });
         }
       )
       .subscribe();
