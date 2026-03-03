@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import ChatTrigger from "../components/ChatTrigger";
+import ChatTriggerWhite from "../components/ChatTriggerWhite";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -85,12 +87,7 @@ ${formData.message}
                   Chat history saved
                 </li>
               </ul>
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md transition-colors flex items-center justify-center">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                Start Live Chat
-              </button>
+              <ChatTrigger />
             </div>
 
             {/* Phone Support */}
@@ -177,7 +174,7 @@ ${formData.message}
                   <div>
                     <h3 className="font-semibold text-lg text-gray-800">Live Chat</h3>
                     <p className="text-gray-600 mb-1">Instant messaging support</p>
-                    <button className="text-blue-600 font-medium hover:underline">Start chatting now</button>
+                    <ChatTrigger variant="link" />
                   </div>
                 </div>
               </div>
@@ -279,12 +276,9 @@ ${formData.message}
                 <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
                   <p className="text-gray-700 mb-4">For urgent support, use our live chat or call our 24/7 support line:</p>
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-md transition-colors inline-flex items-center justify-center">
-                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                      </svg>
-                      Live Chat
-                    </button>
+                    <div className="flex-1">
+                      <ChatTrigger />
+                    </div>
                     <a href="tel:+15551234567" className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-md transition-colors inline-flex items-center justify-center">
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -371,12 +365,7 @@ ${formData.message}
           <h2 className="text-3xl font-bold mb-4">Need Help Right Now?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">Our contact center is available 24/7. Choose your preferred method of communication.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-8 rounded-md transition-colors inline-flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-              Start Live Chat
-            </button>
+            <ChatTriggerWhite />
             <a href="tel:+15551234567" className="bg-white hover:bg-gray-100 text-green-600 font-bold py-3 px-8 rounded-md transition-colors inline-flex items-center">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
