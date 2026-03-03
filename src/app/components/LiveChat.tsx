@@ -30,7 +30,10 @@ export default function LiveChat() {
   useEffect(() => {
     if (!isMounted) return;
 
+    console.log('LiveChat: Setting up event listener');
+
     const handleOpenChat = () => {
+      console.log('LiveChat: openLiveChat event received');
       setIsOpen(true);
     };
 

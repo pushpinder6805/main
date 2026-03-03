@@ -7,8 +7,10 @@ type ChatTriggerProps = {
 export default function ChatTrigger({ variant = 'primary' }: ChatTriggerProps) {
   const openChat = (e: React.MouseEvent) => {
     e.preventDefault();
+    console.log('ChatTrigger clicked, dispatching openLiveChat event');
     const event = new CustomEvent('openLiveChat');
     window.dispatchEvent(event);
+    console.log('Event dispatched');
   };
 
   if (variant === 'link') {
