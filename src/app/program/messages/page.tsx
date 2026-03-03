@@ -18,8 +18,10 @@ export default function MessagesPage() {
   useEffect(() => {
     if (user) {
       loadConversations();
+    } else if (!isLoading) {
+      setLoading(false);
     }
-  }, [user]);
+  }, [user, isLoading]);
 
   useEffect(() => {
     if (selectedConversation) {
@@ -42,6 +44,8 @@ export default function MessagesPage() {
     const { data } = await apiClient.getConversations();
     if (data) {
       setConversations(data);
+    } else {
+      setConversations([]);
     }
     setLoading(false);
   };
@@ -51,6 +55,8 @@ export default function MessagesPage() {
     const { data } = await apiClient.getMessages(selectedConversation.id);
     if (data) {
       setMessages(data);
+    } else {
+      setMessages([]);
     }
   };
 

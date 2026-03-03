@@ -23,14 +23,18 @@ export default function AppointmentsPage() {
   useEffect(() => {
     if (user) {
       loadAppointments();
+    } else if (!isLoading) {
+      setLoading(false);
     }
-  }, [user]);
+  }, [user, isLoading]);
 
   const loadAppointments = async () => {
     setLoading(true);
     const { data } = await apiClient.getAppointments();
     if (data) {
       setAppointments(data);
+    } else {
+      setAppointments([]);
     }
     setLoading(false);
   };

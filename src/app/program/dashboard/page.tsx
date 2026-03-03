@@ -17,22 +17,33 @@ export default function UserDashboard() {
   useEffect(() => {
     if (user) {
       loadDashboardData();
+    } else if (!isLoading) {
+      setLoadingData(false);
     }
-  }, [user]);
+  }, [user, isLoading]);
 
   const loadDashboardData = async () => {
     setLoadingData(true);
+    console.log('Loading dashboard data for user:', user);
+
     const [appointmentsRes, transactionsRes] = await Promise.all([
       apiClient.getAppointments(),
       apiClient.getTransactions(),
     ]);
 
+    console.log('Appointments:', appointmentsRes);
+    console.log('Transactions:', transactionsRes);
+
     if (appointmentsRes.data) {
       setAppointments(appointmentsRes.data.slice(0, 5));
+    } else {
+      setAppointments([]);
     }
 
     if (transactionsRes.data) {
       setTransactions(transactionsRes.data.slice(0, 10));
+    } else {
+      setTransactions([]);
     }
 
     setLoadingData(false);

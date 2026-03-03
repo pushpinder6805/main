@@ -14,23 +14,49 @@ interface ProgramAuthContextType {
 
 const ProgramAuthContext = createContext<ProgramAuthContextType | undefined>(undefined);
 
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+  return null;
+}
+
 export function ProgramAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('worksphere_user');
-    if (storedUser) {
+    initializeAuth();
+  }, []);
+
+  const initializeAuth = async () => {
+    const discourseCookie = getCookie('discourse_user');
+
+    if (discourseCookie) {
       try {
-        const userData = JSON.parse(storedUser);
-        setUser(userData);
-        refreshProfile();
+        const discourseUser = JSON.parse(decodeURIComponent(discourseCookie));
+        localStorage.setItem('worksphere_user', JSON.stringify(discourseUser));
+
+        await refreshProfile();
       } catch (e) {
-        localStorage.removeItem('worksphere_user');
+        console.error('Error parsing discourse cookie:', e);
+      }
+    } else {
+      const storedUser = localStorage.getItem('worksphere_user');
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          setUser(userData);
+          await refreshProfile();
+        } catch (e) {
+          localStorage.removeItem('worksphere_user');
+        }
       }
     }
+
     setIsLoading(false);
-  }, []);
+  };
 
   const refreshProfile = async () => {
     const { data, error } = await apiClient.getUserProfile();
@@ -62,6 +88,7 @@ export function ProgramAuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     localStorage.removeItem('worksphere_user');
+    document.cookie = 'discourse_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     setUser(null);
     window.location.href = '/';
   };

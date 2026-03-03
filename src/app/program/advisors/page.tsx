@@ -12,6 +12,7 @@ export default function AdvisorsPage() {
   const [selectedSkill, setSelectedSkill] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
   const [sortBy, setSortBy] = useState<'rating' | 'price_low' | 'price_high'>('rating');
 
   useEffect(() => {
@@ -24,13 +25,27 @@ export default function AdvisorsPage() {
 
   const loadData = async () => {
     setLoading(true);
+    setError('');
+    console.log('Loading advisors data...');
+
     const [advisorsRes, skillsRes] = await Promise.all([
       apiClient.getAdvisors(),
       apiClient.getSkills(),
     ]);
 
+    console.log('Advisors response:', advisorsRes);
+    console.log('Skills response:', skillsRes);
+
+    if (advisorsRes.error) {
+      setError(advisorsRes.error);
+    }
+
     if (advisorsRes.data) {
+      console.log('Setting advisors:', advisorsRes.data);
       setAdvisors(advisorsRes.data);
+    } else {
+      console.log('No advisors data received');
+      setAdvisors([]);
     }
 
     if (skillsRes.data) {
@@ -74,7 +89,27 @@ export default function AdvisorsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading advisors...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Error Loading Advisors</h1>
+          <p className="text-red-600 mb-6">{error}</p>
+          <button
+            onClick={loadData}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
