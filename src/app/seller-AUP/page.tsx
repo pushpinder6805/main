@@ -118,7 +118,7 @@ export default function SellerAUP() {
             <p className="text-black">
               <strong>Email:</strong> support@workspherepulse.com<br />
               <strong>Company Name:</strong> WorkSphere Pulse<br />
-              <strong>Registered Address:</strong> 123 Lorem ipsum, Anytown, ST 12345
+              <strong>Registered Address:</strong> 3112 Centerville Rd, Greenville, DE, 19807
             </p>
 
             <p className="text-sm text-black mt-8">Last updated: {new Date().toLocaleDateString()}</p>
