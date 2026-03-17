@@ -57,7 +57,7 @@ export default function ServiceGuarantee() {
                 We provide multiple support channels to ensure a smooth user experience:
               </p>
               <ul className="list-disc pl-6 space-y-2">
-                <li>Email Support: support@wellbeingplatform.com</li>
+                <li>Email Support: admin@workspherepulse.com</li>
                 <li>Platform-based messaging system</li>
                 <li>FAQ / Help Center</li>
                 <li>Booking management dashboard for users</li>
