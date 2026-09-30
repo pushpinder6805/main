@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://backend.workspherepulse.com/api/v1.0';
+const API_BASE_URL = '/api/backend';
 
 export interface ApiResponse<T> {
   data?: T;
@@ -22,7 +22,7 @@ export interface Advisor {
 
 export interface Availability {
   id: number;
-  day_of_week: number;
+  day_of_week: string;
   start_time: string;
   end_time: string;
 }
@@ -106,38 +106,20 @@ export interface OrderResponse {
   payment_url: string;
 }
 
+export interface Skill {
+  id: number;
+  name: string;
+  description?: string;
+}
+
 class ApiClient {
-  private getAuthHeader(): string | null {
-    if (typeof window === 'undefined') return null;
-
-    let user = localStorage.getItem('discourse_user');
-    if (!user) {
-      user = localStorage.getItem('worksphere_user');
-    }
-
-    if (!user) return null;
-
-    try {
-      const userData = JSON.parse(user);
-      return userData.username;
-    } catch (e) {
-      return null;
-    }
-  }
-
   private async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
-    const authHeader = this.getAuthHeader();
-
     const headers: Record<string, string> = {
       ...(options.headers as Record<string, string>),
     };
-
-    if (authHeader) {
-      headers['X-Discourse-Remote-User'] = authHeader;
-    }
 
     if (!(options.body instanceof FormData)) {
       headers['Content-Type'] = 'application/json';
@@ -151,12 +133,10 @@ class ApiClient {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('API Error:', response.status, errorData);
-        return { error: errorData.detail || `HTTP ${response.status}` };
+        return { error: errorData.error || errorData.detail || `HTTP ${response.status}` };
       }
 
       const data = await response.json();
-      console.log('API Success:', endpoint, data);
       return { data };
     } catch (error) {
       console.error('Network Error:', error);
@@ -168,8 +148,12 @@ class ApiClient {
     return this.request<Advisor[]>('/advisors/');
   }
 
-  async getSkills(): Promise<ApiResponse<string[]>> {
-    return this.request<string[]>('/skills/');
+  async getSkills(): Promise<ApiResponse<Skill[]>> {
+    return this.request<Skill[]>('/skills/');
+  }
+
+  async applyAsAdvisor(): Promise<ApiResponse<UserProfile>> {
+    return this.request<UserProfile>('/profile/apply-advisor/', {method: 'POST'});
   }
 
   async getUserProfile(): Promise<ApiResponse<UserProfile>> {

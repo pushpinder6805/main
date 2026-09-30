@@ -95,13 +95,13 @@ export default function Header() {
             ) : (
               <>
                 <Link
-                  href="/api/auth/discourse/login"
+                  href="/login"
                   className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
                 >
                   Login
                 </Link>
                 <Link
-                  href="/api/auth/discourse/login"
+                  href="/signup"
                   className="hidden md:block bg-white hover:bg-gray-100 text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-lg font-medium transition-colors"
                 >
                   Sign Up
@@ -196,14 +196,14 @@ export default function Header() {
               ) : (
                 <div className="flex flex-col gap-2">
                   <Link
-                    href="/api/auth/discourse/login"
+                    href="/login"
                     className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors text-center"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
-                    href="/api/auth/discourse/login"
+                    href="/signup"
                     className="bg-white hover:bg-gray-100 text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-lg font-medium transition-colors text-center"
                     onClick={() => setMobileMenuOpen(false)}
                   >

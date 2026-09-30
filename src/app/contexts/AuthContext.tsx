@@ -1,93 +1,72 @@
-"use client"
+"use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { DiscourseUser } from '@/lib/discourse-auth';
+import { createContext, useCallback, useContext, useEffect, useState, ReactNode } from 'react';
+
+export interface WorksphereUser {
+  id: string;
+  username: string;
+  name: string;
+  email: string;
+  email_verified: boolean;
+  type: 'user' | 'advisor' | 'admin';
+  onboarded: boolean;
+  approved: boolean;
+  avatar_url?: string;
+  wallet_balance?: number;
+  is_advisor?: boolean;
+}
 
 interface AuthContextType {
-  user: (DiscourseUser & { role?: string; is_advisor?: boolean; is_admin?: boolean }) | null;
+  user: WorksphereUser | null;
   isAdmin: boolean;
   isAdvisor: boolean;
   isLoading: boolean;
+  refresh: () => Promise<WorksphereUser | null>;
   login: () => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-function getCookie(name: string): string | null {
-  if (typeof document === 'undefined') return null;
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
-  return null;
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<(DiscourseUser & { role?: string; is_advisor?: boolean; is_admin?: boolean }) | null>(null);
+  const [user, setUser] = useState<WorksphereUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    initializeAuth();
-
-    const interval = setInterval(() => {
-      const discourseCookie = getCookie('discourse_user');
-      if (discourseCookie && !user) {
-        try {
-          const userData = JSON.parse(decodeURIComponent(discourseCookie));
-          localStorage.setItem('discourse_user', JSON.stringify(userData));
-          setUser(userData);
-        } catch (e) {
-          console.error('Error parsing discourse cookie:', e);
-        }
+  const refresh = useCallback(async () => {
+    try {
+      const response = await fetch('/api/auth/me', {cache: 'no-store'});
+      if (!response.ok) {
+        setUser(null);
+        return null;
       }
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, [user]);
-
-  const initializeAuth = () => {
-    const discourseCookie = getCookie('discourse_user');
-
-    if (discourseCookie) {
-      try {
-        const userData = JSON.parse(decodeURIComponent(discourseCookie));
-        localStorage.setItem('discourse_user', JSON.stringify(userData));
-        setUser(userData);
-      } catch (e) {
-        console.error('Error parsing discourse cookie:', e);
-      }
-    } else {
-      const storedUser = localStorage.getItem('discourse_user');
-      if (storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          setUser(userData);
-        } catch (e) {
-          localStorage.removeItem('discourse_user');
-        }
-      }
+      const data = await response.json() as {user: WorksphereUser};
+      setUser(data.user);
+      return data.user;
+    } catch {
+      setUser(null);
+      return null;
+    } finally {
+      setIsLoading(false);
     }
+  }, []);
 
-    setIsLoading(false);
-  };
+  useEffect(() => { void refresh(); }, [refresh]);
 
   const login = () => {
-    window.location.href = '/api/auth/discourse/login';
+    window.location.href = '/login';
   };
 
-  const logout = () => {
-    localStorage.removeItem('discourse_user');
-    localStorage.removeItem('worksphere_user');
-    document.cookie = 'discourse_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  const logout = async () => {
+    await fetch('/api/auth/logout', {method: 'POST'}).catch(() => undefined);
     setUser(null);
     window.location.href = '/';
   };
 
-  const isAdmin = user?.admin === true || user?.moderator === true || user?.is_admin === true;
-  const isAdvisor = user?.is_advisor === true;
+  const isAdmin = user?.type === 'admin';
+  const isAdvisor = user?.type === 'advisor';
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, isAdvisor, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ user, isAdmin, isAdvisor, isLoading, refresh, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

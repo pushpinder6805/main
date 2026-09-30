@@ -1,322 +1,78 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
+import Link from 'next/link';
+import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/contexts/AuthContext';
-import { supabase } from '@/lib/supabase';
+import {apiClient, Skill} from '@/lib/api-client';
+
+type Slot = {day_of_week: string; start_time: string; end_time: string};
+const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
 export default function OnboardPage() {
   const router = useRouter();
-  const { user } = useAuth();
-  const [formData, setFormData] = useState({
-    about_me: '',
-    timezone: 'America/New_York',
-    language: 'en',
-    rate: '',
-    skills: [] as string[],
-  });
-  const [availabilities, setAvailabilities] = useState<Array<{ day_of_week: number; start_time: string; end_time: string }>>([]);
+  const {user, isLoading, refresh} = useAuth();
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [selectedSkills, setSelectedSkills] = useState<number[]>([]);
+  const [slots, setSlots] = useState<Slot[]>([{day_of_week: 'monday', start_time: '09:00', end_time: '17:00'}]);
+  const [about, setAbout] = useState('');
+  const [rate, setRate] = useState('');
+  const [timezone, setTimezone] = useState('America/New_York');
+  const [language, setLanguage] = useState('en');
   const [avatar, setAvatar] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState('');
-  const [skillInput, setSkillInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-  const handleAddSkill = () => {
-    if (skillInput.trim() && !formData.skills.includes(skillInput.trim())) {
-      setFormData({ ...formData, skills: [...formData.skills, skillInput.trim()] });
-      setSkillInput('');
-    }
-  };
-
-  const handleRemoveSkill = (skill: string) => {
-    setFormData({ ...formData, skills: formData.skills.filter((s) => s !== skill) });
-  };
-
-  const handleAddAvailability = () => {
-    setAvailabilities([...availabilities, { day_of_week: 0, start_time: '09:00', end_time: '17:00' }]);
-  };
-
-  const handleRemoveAvailability = (index: number) => {
-    setAvailabilities(availabilities.filter((_, i) => i !== index));
-  };
-
-  const handleAvailabilityChange = (index: number, field: string, value: string | number) => {
-    const updated = [...availabilities];
-    updated[index] = { ...updated[index], [field]: value };
-    setAvailabilities(updated);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    if (!user) {
-      setError('Please login first');
-      return;
-    }
-
-    if (!formData.about_me || !formData.rate || formData.skills.length === 0) {
-      setError('Please fill in all required fields');
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const { data: advisor, error: insertError } = await supabase
-        .from('advisors')
-        .insert({
-          user_id: user.username,
-          name: user.name || user.username,
-          email: user.email,
-          avatar_url: user.avatar_url || '',
-          about_me: formData.about_me,
-          timezone: formData.timezone,
-          language: formData.language,
-          rate: parseFloat(formData.rate),
-          skills: formData.skills,
-        })
-        .select()
-        .single();
-
-      if (insertError) {
-        setError(`Error: ${insertError.message}`);
-        setLoading(false);
-        return;
+  useEffect(() => {
+    if (isLoading) return;
+    if (!user) { router.replace('/login'); return; }
+    if (user.type === 'advisor' && user.onboarded) { router.replace(user.approved ? '/program/advisor-dashboard' : '/program/pending'); return; }
+    void (async () => {
+      if (user.type !== 'advisor') {
+        const applied = await apiClient.applyAsAdvisor();
+        if (applied.error) { setError(applied.error); return; }
+        await refresh();
       }
+      const result = await apiClient.getSkills();
+      if (result.error) setError(result.error); else setSkills(result.data || []);
+    })();
+  }, [user, isLoading, router, refresh]);
 
-      if (availabilities.length > 0 && advisor) {
-        const availabilityInserts = availabilities.map(a => ({
-          advisor_id: advisor.id,
-          day_of_week: a.day_of_week,
-          start_time: a.start_time,
-          end_time: a.end_time,
-        }));
-
-        await supabase.from('advisor_availabilities').insert(availabilityInserts);
-      }
-
-      router.push('/program/advisor-dashboard');
-    } catch (err) {
-      setError('Failed to submit onboarding');
-      setLoading(false);
-    }
-  };
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Login Required</h1>
-          <p className="text-gray-600 mb-6">Please login to become an advisor</p>
-          <a
-            href="/program/login"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-colors"
-          >
-            Login
-          </a>
-        </div>
-      </div>
-    );
+  function updateSlot(index: number, field: keyof Slot, value: string) {
+    setSlots(items => items.map((slot, position) => position === index ? {...slot, [field]: value} : slot));
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-6 max-w-3xl">
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Become an Advisor</h1>
-          <p className="text-gray-600 mb-8">Complete your profile to start helping others</p>
+  async function submit(event: FormEvent) {
+    event.preventDefault(); setError(''); setLoading(true);
+    try {
+      const input = {about_me: about, rate, skills: selectedSkills, timezone, language, privacy_policy_accepted: accepted, availabilities: slots};
+      const body = new FormData();
+      body.append('input', JSON.stringify(input));
+      if (avatar) body.append('avatar', avatar);
+      const result = await apiClient.onboardAdvisor(body);
+      if (result.error) throw new Error(result.error);
+      await refresh();
+      router.replace('/program/pending');
+    } catch (reason) { setError(reason instanceof Error ? reason.message : 'Unable to submit your application.'); }
+    finally { setLoading(false); }
+  }
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Profile Picture
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setAvatar(e.target.files?.[0] || null)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+  if (isLoading || !user) return <div className="min-h-[70vh] flex items-center justify-center text-gray-600">Loading your account…</div>;
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                About Me *
-              </label>
-              <textarea
-                value={formData.about_me}
-                onChange={(e) => setFormData({ ...formData, about_me: e.target.value })}
-                rows={5}
-                placeholder="Tell us about your experience and expertise..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Timezone
-                </label>
-                <select
-                  value={formData.timezone}
-                  onChange={(e) => setFormData({ ...formData, timezone: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="America/New_York">Eastern Time</option>
-                  <option value="America/Chicago">Central Time</option>
-                  <option value="America/Denver">Mountain Time</option>
-                  <option value="America/Los_Angeles">Pacific Time</option>
-                  <option value="Europe/London">London</option>
-                  <option value="Europe/Paris">Paris</option>
-                  <option value="Asia/Tokyo">Tokyo</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Language
-                </label>
-                <select
-                  value={formData.language}
-                  onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="en">English</option>
-                  <option value="es">Spanish</option>
-                  <option value="fr">French</option>
-                  <option value="de">German</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Hourly Rate ($) *
-              </label>
-              <input
-                type="number"
-                value={formData.rate}
-                onChange={(e) => setFormData({ ...formData, rate: e.target.value })}
-                placeholder="50"
-                min="1"
-                step="0.01"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Skills & Expertise *
-              </label>
-              <div className="flex gap-2 mb-3">
-                <input
-                  type="text"
-                  value={skillInput}
-                  onChange={(e) => setSkillInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSkill())}
-                  placeholder="Add a skill..."
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddSkill}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
-                >
-                  Add
-                </button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {formData.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full flex items-center gap-2"
-                  >
-                    {skill}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveSkill(skill)}
-                      className="hover:text-blue-900"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center mb-3">
-                <label className="block text-sm font-medium text-gray-700">
-                  Availability
-                </label>
-                <button
-                  type="button"
-                  onClick={handleAddAvailability}
-                  className="text-sm bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-lg transition-colors"
-                >
-                  + Add Slot
-                </button>
-              </div>
-              <div className="space-y-3">
-                {availabilities.map((avail, index) => (
-                  <div key={index} className="flex gap-2 items-center">
-                    <select
-                      value={avail.day_of_week}
-                      onChange={(e) => handleAvailabilityChange(index, 'day_of_week', parseInt(e.target.value))}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      {daysOfWeek.map((day, i) => (
-                        <option key={i} value={i}>{day}</option>
-                      ))}
-                    </select>
-                    <input
-                      type="time"
-                      value={avail.start_time}
-                      onChange={(e) => handleAvailabilityChange(index, 'start_time', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <span className="text-gray-500">to</span>
-                    <input
-                      type="time"
-                      value={avail.end_time}
-                      onChange={(e) => handleAvailabilityChange(index, 'end_time', e.target.value)}
-                      className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveAvailability(index)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 rounded-lg transition-colors"
-            >
-              {loading ? 'Setting up your profile...' : 'Complete Setup'}
-            </button>
-          </form>
-        </div>
-      </div>
+  return <div className="min-h-screen bg-gray-50 py-12 px-4"><form onSubmit={submit} className="mx-auto max-w-3xl space-y-7 rounded-2xl bg-white p-8 shadow-lg">
+    <div><h1 className="text-3xl font-bold text-gray-900">Advisor application</h1><p className="mt-2 text-gray-600">Tell us about your expertise and availability. Your profile will stay pending until it is reviewed.</p></div>
+    {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+    <label className="block text-sm font-medium text-gray-700">Experience and expertise<textarea value={about} onChange={e => setAbout(e.target.value)} required rows={6} className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3" /></label>
+    <div className="grid gap-5 sm:grid-cols-2">
+      <label className="text-sm font-medium text-gray-700">Rate per minute (USD)<input type="number" min="0.01" max="1000" step="0.01" value={rate} onChange={e => setRate(e.target.value)} required className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3" /></label>
+      <label className="text-sm font-medium text-gray-700">Profile photo (optional)<input type="file" accept="image/jpeg,image/png" onChange={e => setAvatar(e.target.files?.[0] || null)} className="mt-2 block w-full rounded-lg border border-gray-300 px-3 py-2" /></label>
+      <label className="text-sm font-medium text-gray-700">Time zone<select value={timezone} onChange={e => setTimezone(e.target.value)} className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3"><option value="America/New_York">US Eastern</option><option value="America/Chicago">US Central</option><option value="America/Denver">US Mountain</option><option value="America/Los_Angeles">US Pacific</option><option value="Europe/London">London</option><option value="Europe/Paris">Central Europe</option><option value="Asia/Kolkata">India</option><option value="Asia/Tokyo">Japan</option><option value="UTC">UTC</option></select></label>
+      <label className="text-sm font-medium text-gray-700">Language<select value={language} onChange={e => setLanguage(e.target.value)} className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3"><option value="en">English</option><option value="fr">French</option></select></label>
     </div>
-  );
+    <fieldset><legend className="text-sm font-medium text-gray-700">Skills</legend><div className="mt-3 grid gap-2 sm:grid-cols-2">{skills.map(skill => <label key={skill.id} className="rounded-lg border border-gray-200 p-3"><input type="checkbox" checked={selectedSkills.includes(skill.id)} onChange={e => setSelectedSkills(values => e.target.checked ? [...values, skill.id] : values.filter(id => id !== skill.id))} className="mr-2" />{skill.name}</label>)}</div></fieldset>
+    <fieldset><div className="flex items-center justify-between"><legend className="text-sm font-medium text-gray-700">Weekly availability</legend><button type="button" onClick={() => setSlots(values => [...values, {day_of_week: 'monday', start_time: '09:00', end_time: '17:00'}])} className="font-semibold text-blue-600">Add time</button></div><div className="mt-3 space-y-3">{slots.map((slot, index) => <div key={index} className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2"><select value={slot.day_of_week} onChange={e => updateSlot(index, 'day_of_week', e.target.value)} className="rounded-lg border border-gray-300 px-3 py-2">{DAYS.map(day => <option key={day} value={day}>{day[0].toUpperCase() + day.slice(1)}</option>)}</select><input type="time" value={slot.start_time} onChange={e => updateSlot(index, 'start_time', e.target.value)} className="rounded-lg border border-gray-300 px-3 py-2"/><input type="time" value={slot.end_time} onChange={e => updateSlot(index, 'end_time', e.target.value)} className="rounded-lg border border-gray-300 px-3 py-2"/><button type="button" disabled={slots.length === 1} onClick={() => setSlots(values => values.filter((_, position) => position !== index))} className="px-2 text-red-600 disabled:opacity-30">Remove</button></div>)}</div></fieldset>
+    <label className="flex items-start gap-3 text-sm text-gray-700"><input type="checkbox" checked={accepted} onChange={e => setAccepted(e.target.checked)} required className="mt-1"/><span>I accept the <Link href="/privacy-policy" className="font-semibold text-blue-600">privacy policy</Link> and confirm the information is accurate.</span></label>
+    <button disabled={loading || skills.length === 0} className="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white disabled:opacity-60">{loading ? 'Submitting…' : 'Submit application'}</button>
+  </form></div>;
 }
