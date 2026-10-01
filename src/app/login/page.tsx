@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth, WorksphereUser } from '@/app/contexts/AuthContext';
 
@@ -19,6 +19,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [returnTo, setReturnTo] = useState<string | null>(null);
+
+  useEffect(() => {
+    setReturnTo(new URLSearchParams(window.location.search).get('return_to'));
+  }, []);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -33,7 +38,6 @@ export default function LoginPage() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Unable to sign in.');
       const user = await refresh() || data.user as WorksphereUser;
-      const returnTo = new URLSearchParams(window.location.search).get('return_to');
       router.replace(returnTo?.startsWith('/') && !returnTo.startsWith('//') ? returnTo : destination(user));
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : 'Unable to sign in.');
@@ -54,7 +58,7 @@ export default function LoginPage() {
       </label>
       <div className="text-right"><Link href="/forgot-password" className="text-sm font-semibold text-blue-600">Forgot password?</Link></div>
       <button disabled={loading} className="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white disabled:opacity-60">{loading ? 'Signing in…' : 'Sign in'}</button>
-      <p className="text-center text-sm text-gray-600">New to Workspherepulse? <Link href="/signup" className="font-semibold text-blue-600">Create an account</Link></p>
+      <p className="text-center text-sm text-gray-600">New to Workspherepulse? <Link href={returnTo ? `/signup?return_to=${encodeURIComponent(returnTo)}` : '/signup'} className="font-semibold text-blue-600">Create an account</Link></p>
     </form>
   </div>;
 }
