@@ -13,10 +13,11 @@ export interface Advisor {
   about_me: string;
   language: string;
   timezone: string;
-  rate: number;
-  skills: string[];
-  rating: number;
-  reviews_count: number;
+  rate?: number;
+  skills: Skill[];
+  rating: number | null;
+  reviews_count?: number;
+  pricing: Array<{amount: string; currency: string; is_active: boolean}>;
   availabilities: Availability[];
 }
 
@@ -33,7 +34,8 @@ export interface UserProfile {
   name: string;
   email: string;
   avatar_url: string;
-  wallet_balance: number;
+  wallet_balance?: number;
+  wallet: {currency: string; balance: number; decimal_places: number};
   is_advisor: boolean;
   language: string;
   timezone: string;
@@ -46,24 +48,33 @@ export interface AdvisorProfile extends UserProfile {
   availabilities: Availability[];
   rating: number;
   reviews_count: number;
+  pricing?: Array<{amount: number; currency: string; is_active: boolean}>;
+  stats?: {total: number; month: number; earnings: number; rating: number};
 }
 
 export interface Appointment {
   id: number;
-  advisor_id: number;
+  advisor?: number;
+  advisor_id?: number;
   advisor_name: string;
-  advisor_avatar: string;
-  user_id: number;
+  advisor_avatar?: string;
+  user?: number;
+  user_id?: number;
   user_name: string;
-  user_avatar: string;
-  scheduled_at: string;
+  user_avatar?: string;
+  start_date: string;
+  end_date: string;
+  scheduled_at?: string;
   duration: number;
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+  status: 'pending_payment' | 'scheduled' | 'started' | 'completed' | 'cancelled' | 'no_show';
   zoom_join_url?: string;
   zoom_start_url?: string;
   rating?: number;
   review?: string;
   total_cost: number;
+  is_advisor?: boolean;
+  is_user?: boolean;
+  is_deleted?: boolean;
 }
 
 export interface Transaction {
@@ -77,28 +88,33 @@ export interface Transaction {
 
 export interface Conversation {
   id: number;
-  advisor_id: number;
+  advisor?: number;
+  advisor_id?: number;
   advisor_name: string;
-  advisor_avatar: string;
-  user_id: number;
+  advisor_avatar?: string;
+  user?: number;
+  user_id?: number;
   user_name: string;
-  user_avatar: string;
+  user_avatar?: string;
   duration: number;
-  status: 'active' | 'completed' | 'cancelled';
-  created_at: string;
+  status: 'pending_payment' | 'scheduled' | 'started' | 'completed' | 'cancelled';
+  start_date: string;
+  end_date: string;
+  created_at?: string;
   last_message?: string;
   unread_count: number;
 }
 
 export interface Message {
   id: number;
-  conversation_id: number;
-  sender_id: number;
-  sender_name: string;
+  conversation?: number;
+  conversation_id?: number;
+  sender: {id: number; name: string; avatar_url: string};
   content?: string;
-  audio_url?: string;
-  audio_duration?: number;
+  audio?: string;
+  duration?: number;
   created_at: string;
+  is_mine: boolean;
 }
 
 export interface OrderResponse {
@@ -269,7 +285,14 @@ class ApiClient {
   }
 
   async getMessages(conversationId: number): Promise<ApiResponse<Message[]>> {
-    return this.request<Message[]>(`/conversations/${conversationId}/messages/`);
+    const result = await this.request<Message[]>(`/conversations/${conversationId}/messages/`);
+    if (result.data) {
+      result.data = result.data.map(message => ({
+        ...message,
+        audio: message.audio?.replace('/api/v1.0/', '/api/backend/'),
+      }));
+    }
+    return result;
   }
 
   async sendMessage(conversationId: number, content?: string, audioFile?: File): Promise<ApiResponse<Message>> {

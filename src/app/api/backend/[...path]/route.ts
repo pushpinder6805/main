@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { backendOrigin, SESSION_COOKIE } from '@/lib/server/backend-auth';
 
-const ALLOWED = ['profile/', 'skills/', 'advisors/', 'appointments/', 'conversations/'];
+const ALLOWED = ['profile/', 'skills/', 'advisors/', 'appointments/', 'conversations/', 'audio/'];
 
 async function proxy(request: NextRequest, context: {params: Promise<{path: string[]}>}) {
   const token = request.cookies.get(SESSION_COOKIE)?.value;

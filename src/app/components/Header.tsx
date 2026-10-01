@@ -46,25 +46,17 @@ export default function Header() {
                     onClick={() => setProgramDropdownOpen(false)}
                   />
                   <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg py-2 w-56 z-50">
-                    <Link href="/program/advisors" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                      Browse Advisors
-                    </Link>
+                    {user?.type !== 'advisor' && <Link href="/program/advisors" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Browse Advisors</Link>}
                     <Link href="/program/dashboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                       My Dashboard
                     </Link>
                     <Link href="/program/appointments" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                       My Appointments
                     </Link>
-                    <Link href="/program/messages" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                      Messages
-                    </Link>
+                    {user?.type !== 'advisor' && <Link href="/program/messages" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">AI sessions</Link>}
                     <div className="border-t border-gray-200 my-2"></div>
-                    <Link href="/program/onboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                      Become an Advisor
-                    </Link>
-                    <Link href="/program/advisor-dashboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                      Advisor Dashboard
-                    </Link>
+                    {user?.type !== 'advisor' && <Link href="/program/onboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Become an Advisor</Link>}
+                    {user?.type === 'advisor' && <Link href="/program/advisor-dashboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Advisor Dashboard</Link>}
                   </div>
                 </>
               )}
@@ -141,13 +133,13 @@ export default function Header() {
                   >
                     Login
                   </Link>
-                  <Link
+                  {user?.type !== 'advisor' && <Link
                     href="/program/advisors"
                     className="block text-gray-600 hover:text-blue-600"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Browse Advisors
-                  </Link>
+                  </Link>}
                   <Link
                     href="/program/dashboard"
                     className="block text-gray-600 hover:text-blue-600"
@@ -155,13 +147,13 @@ export default function Header() {
                   >
                     My Dashboard
                   </Link>
-                  <Link
+                  {user?.type !== 'advisor' && <Link
                     href="/program/onboard"
                     className="block text-gray-600 hover:text-blue-600"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Become an Advisor
-                  </Link>
+                  </Link>}
                 </div>
               </div>
               <Link
