@@ -1,4 +1,4 @@
-import { createHmac } from 'crypto';
+import { createHmac, timingSafeEqual } from 'crypto';
 
 export interface DiscourseUser {
   id: number;
@@ -29,17 +29,15 @@ export function getDiscourseLoginUrl(returnUrl: string): string {
 }
 
 export function verifyDiscoursePayload(sso: string, sig: string): DiscourseUser | null {
+  if (!DISCOURSE_CONNECT_SECRET || !/^[a-f0-9]{64}$/i.test(sig) || sso.length > 8192) return null;
   const expectedSig = createHmac('sha256', DISCOURSE_CONNECT_SECRET).update(sso).digest('hex');
 
-  if (sig !== expectedSig) {
-    console.error('Invalid signature');
-    return null;
-  }
+  if (!timingSafeEqual(Buffer.from(sig, 'hex'), Buffer.from(expectedSig, 'hex'))) return null;
 
   const payload = Buffer.from(sso, 'base64').toString('utf8');
   const params = new URLSearchParams(payload);
 
-  return {
+  const user = {
     id: parseInt(params.get('external_id') || '0'),
     username: params.get('username') || '',
     name: params.get('name') || '',
@@ -48,6 +46,8 @@ export function verifyDiscoursePayload(sso: string, sig: string): DiscourseUser 
     moderator: params.get('moderator') === 'true',
     avatar_url: params.get('avatar_url') || undefined,
   };
+  if (!user.id || !user.username || !user.email.includes('@')) return null;
+  return user;
 }
 
 export function isUserAdmin(user: DiscourseUser | null): boolean {

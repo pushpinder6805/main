@@ -1,75 +1,44 @@
+import { createHmac } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyDiscoursePayload } from '@/lib/discourse-auth';
-
-async function fetchUserRole(username: string): Promise<string> {
-  try {
-    const response = await fetch(`https://community.workspherepulse.com/u/${username}.json`, {
-      headers: {
-        'Api-Key': process.env.DISCOURSE_API_KEY || '',
-        'Api-Username': 'system',
-      },
-    });
-
-    if (!response.ok) return 'user';
-
-    const data = await response.json();
-    const userFields = data.user?.user_fields;
-
-    if (userFields && userFields['2']) {
-      const role = userFields['2'].toLowerCase();
-      if (role === 'advisor') return 'advisor';
-      if (role === 'admin') return 'admin';
-    }
-
-    return 'user';
-  } catch (error) {
-    console.error('Error fetching user role:', error);
-    return 'user';
-  }
-}
+import { backendJson, setSession } from '@/lib/server/backend-auth';
 
 export async function GET(request: NextRequest) {
   const sso = request.nextUrl.searchParams.get('sso');
   const sig = request.nextUrl.searchParams.get('sig');
-
-  if (!sso || !sig) {
-    return NextResponse.redirect(new URL('/program/login?error=missing_params', request.url));
-  }
+  if (!sso || !sig) return NextResponse.redirect(new URL('/login?error=missing_params', request.url));
 
   const user = verifyDiscoursePayload(sso, sig);
+  if (!user) return NextResponse.redirect(new URL('/login?error=invalid_signature', request.url));
 
-  if (!user) {
-    return NextResponse.redirect(new URL('/program/login?error=invalid_signature', request.url));
+  const exchangeSecret = process.env.CENTRAL_AUTH_WEBSITE_EXCHANGE_SECRET || '';
+  if (exchangeSecret.length < 32) {
+    return NextResponse.redirect(new URL('/login?error=community_exchange_unavailable', request.url));
   }
-
-  const role = await fetchUserRole(user.username);
-
-  const userData = {
-    ...user,
-    role,
-    is_advisor: role === 'advisor',
-    is_admin: role === 'admin',
-  };
-
-  let redirectUrl = '/';
-
-  if (role === 'admin') {
-    redirectUrl = '/admin/chat';
-  } else if (role === 'advisor') {
-    redirectUrl = '/program/advisor-dashboard';
-  } else {
-    redirectUrl = '/program/dashboard';
-  }
-
-  const response = NextResponse.redirect(new URL(redirectUrl, request.url));
-
-  response.cookies.set('discourse_user', JSON.stringify(userData), {
-    httpOnly: false,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7,
-    path: '/',
+  const body = JSON.stringify({
+    external_id: String(user.id),
+    username: user.username,
+    email: user.email,
+    name: user.name,
+    avatar_url: user.avatar_url || '',
   });
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const signature = createHmac('sha256', exchangeSecret).update(`${timestamp}.${body}`).digest('hex');
+  const {response: backendResponse, data} = await backendJson('/auth/discourse/exchange/', {
+    method: 'POST',
+    body,
+    headers: {
+      'X-Worksphere-Timestamp': timestamp,
+      'X-Worksphere-Signature': signature,
+    },
+  });
+  if (!backendResponse.ok || !data.access_token) {
+    return NextResponse.redirect(new URL('/login?error=community_exchange_failed', request.url));
+  }
 
+  const requested = request.nextUrl.searchParams.get('return_to') || '/program/dashboard';
+  const returnTo = requested.startsWith('/') && !requested.startsWith('//') ? requested : '/program/dashboard';
+  const response = NextResponse.redirect(new URL(returnTo, request.url));
+  setSession(response, data.access_token);
   return response;
 }

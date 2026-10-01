@@ -58,6 +58,8 @@ export default function LoginPage() {
       </label>
       <div className="text-right"><Link href="/forgot-password" className="text-sm font-semibold text-blue-600">Forgot password?</Link></div>
       <button disabled={loading} className="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white disabled:opacity-60">{loading ? 'Signing in…' : 'Sign in'}</button>
+      <div className="flex items-center gap-3 text-sm text-gray-400"><span className="h-px flex-1 bg-gray-200" /><span>or</span><span className="h-px flex-1 bg-gray-200" /></div>
+      <Link href={`/api/auth/discourse/login?return_to=${encodeURIComponent(returnTo || '/program/dashboard')}`} className="block w-full rounded-lg border border-gray-300 px-4 py-3 text-center font-semibold text-gray-800">Use my existing community account</Link>
       <p className="text-center text-sm text-gray-600">New to Workspherepulse? <Link href={returnTo ? `/signup?return_to=${encodeURIComponent(returnTo)}` : '/signup'} className="font-semibold text-blue-600">Create an account</Link></p>
     </form>
   </div>;
