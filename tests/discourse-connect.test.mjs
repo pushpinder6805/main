@@ -36,6 +36,10 @@ test('rejects missing secret, tampering and malformed signature', () => {
     assert.throws(() => verifyConnectRequest(sso,sig,key,community));
   }
 });
+test('rejects DiscourseConnect secrets shorter than the provider minimum', () => {
+  const tooShort = signed('nonce=a&return_sso_url='+community+'/session/sso_login');
+  assert.throws(() => verifyConnectRequest(tooShort.sso, tooShort.sig, 'short', community));
+});
 test('rejects signed external redirects and duplicate nonce parameters', () => {
   for (const raw of ['nonce=a&return_sso_url=https://evil.example/session/sso_login',
                      'nonce=a&nonce=b&return_sso_url='+community+'/session/sso_login',

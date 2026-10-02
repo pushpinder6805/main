@@ -1,8 +1,8 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
 function signature(payload, secret) {
-  if (typeof secret !== 'string' || secret.length < 32) {
-    throw new Error('Configure a dedicated DiscourseConnect secret of at least 32 characters.');
+  if (typeof secret !== 'string' || secret.length < 10) {
+    throw new Error('Configure a dedicated DiscourseConnect secret of at least 10 characters.');
   }
   return createHmac('sha256', secret).update(payload).digest('hex');
 }
