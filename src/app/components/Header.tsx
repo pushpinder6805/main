@@ -25,7 +25,7 @@ export default function Header() {
 
   return <header className="sticky top-0 z-[60] border-b border-slate-200/80 bg-white/95 shadow-[0_1px_20px_rgba(15,23,42,0.04)] backdrop-blur">
     <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-6">
-      <Link href="/" className="flex items-center gap-3" aria-label="Workspherepulse home"><Image src="/images/logo.png" alt="" width={104} height={40} priority className="h-auto w-[104px]"/></Link>
+      <Link href="/" className="flex items-center gap-3" aria-label="Workspherepulse home"><Image src="/images/logo.png" alt="" width={104} height={40} priority className="w-[104px]" style={{height: "auto"}}/></Link>
       <nav className="hidden items-center gap-8 md:flex" aria-label="Primary navigation">
         <Link href="/" className="nav-link">Home</Link>
         <div className="relative"><button type="button" onClick={() => setProgramOpen(value => !value)} className="nav-link inline-flex items-center gap-1" aria-expanded={programOpen}>Program <ChevronDownIcon className={`h-4 w-4 transition ${programOpen ? "rotate-180" : ""}`}/></button>{programOpen && <><button aria-label="Close menu" className="fixed inset-0 z-40 cursor-default" onClick={() => setProgramOpen(false)}/><div className="absolute left-1/2 top-full z-50 mt-4 w-64 -translate-x-1/2 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">{programLinks.map(([label, href]) => <Link key={href} href={href} onClick={() => setProgramOpen(false)} className="block rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950">{label}</Link>)}</div></>}
