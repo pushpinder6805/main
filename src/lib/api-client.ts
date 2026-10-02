@@ -17,6 +17,7 @@ export interface Advisor {
   skills: Skill[];
   rating: number | null;
   reviews_count?: number;
+  payment_ready: boolean;
   pricing: Array<{amount: string; currency: string; is_active: boolean}>;
   availabilities: Availability[];
 }

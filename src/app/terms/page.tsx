@@ -44,7 +44,7 @@ export default function TermsOfService() {
             <p className="text-black">We reserve the right to modify these terms at any time. Changes will be effective upon posting to our website. Continued use of our services constitutes acceptance of modified terms.</p>
             
             <h2 className="text-black">11. Contact Information</h2>
-            <p className="text-black">If you have questions about these Terms of Service, please contact us at info@workspherepulse.com or call (555) 123-4567.</p>
+            <p className="text-black">If you have questions about these Terms of Service, please contact Workspherepulse LLC at admin@workspherepulse.com.</p>
             
             <p className="text-sm text-black mt-8">Last updated: {new Date().toLocaleDateString()}</p>
           </div>

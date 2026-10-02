@@ -1,6 +1,32 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ShieldCheckIcon, ClockIcon, CurrencyDollarIcon, CheckBadgeIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowRightIcon,
+  CalendarDaysIcon,
+  ChatBubbleLeftRightIcon,
+  CheckBadgeIcon,
+  CreditCardIcon,
+  LockClosedIcon,
+  SparklesIcon,
+  UserGroupIcon,
+  VideoCameraIcon,
+} from "@heroicons/react/24/outline";
+
+const services = [
+  {title: "Workplace wellbeing", description: "Practical support for stress, confidence and sustainable performance at work.", image: "/images/Workplace-Wellbeing.jpg"},
+  {title: "Communication", description: "Build clearer conversations, stronger boundaries and healthier professional relationships.", image: "/images/Effective-Communication.jpg"},
+  {title: "Conflict resolution", description: "Navigate difficult workplace dynamics with structured, confidential guidance.", image: "/images/Common.png"},
+  {title: "Leadership confidence", description: "Develop the clarity and presence to lead teams through complex situations.", image: "/images/lead.png"},
+  {title: "Toxic work culture", description: "Recognise patterns, protect your wellbeing and plan constructive next steps.", image: "/images/toxic.png"},
+  {title: "Work–life balance", description: "Create routines and expectations that support your work and your life.", image: "/images/work-life.jpg"},
+];
+
+const benefits = [
+  {title: "Vetted advisors", description: "Advisor applications are reviewed before profiles become available for booking.", icon: CheckBadgeIcon},
+  {title: "Pay per session", description: "Choose the duration you need and see the complete price before checkout.", icon: CreditCardIcon},
+  {title: "Private by design", description: "Account, booking and payment details use secure, verified systems.", icon: LockClosedIcon},
+  {title: "One connected account", description: "Use the same Workspherepulse identity across the website, app and community.", icon: UserGroupIcon},
+];
 
 export default function Home() {
   return (
@@ -68,184 +94,40 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Preview */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Workspherepulse Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Workplace Wellbeing",
-                description: "Expert guidance to improve wellbeing, balance, and performance at work.",
-                image: "/images/Workplace-Wellbeing.jpg"
-              },
-              {
-                title: "Boosting Motivation",
-                description: "Supporting sustained motivation through expert guidance and practical strategies.",
-                image: "/images/motivation.webp"
-              },
-              {
-                title: "Effective Communication",
-                description: "Expert support to build clear, confident, and effective communication.",
-                image: "/images/Effective-Communication.jpg"
-              },
-              {
-                title: "Conflict Resolution & Workplace Relationships",
-                description: "Expert support to resolve conflict and improve workplace relationships.",
-                image: "/images/Common.png"
-              },
-              {
-                title: "Leading with Confidence",
-                description: "Expert support to build confidence and lead with clarity.",
-                image: "/images/lead.png"
-              },
-              {
-                title: "Navigating Toxic Work Culture",
-                description: "Expert support to navigate and manage toxic work cultures.",
-                image: "/images/toxic.png"
-              },
-              {
-                title: "Work-Life Balance",
-                description: "Expert support to build a healthier work–life balance.",
-                image: "/images/work-life.jpg"
-              },
-            ].map((service, index) => (
-              <div key={index} className="bg-gray-100 rounded-lg hover:shadow-lg transition-shadow border border-gray-200 overflow-hidden">
-                <div className="h-48 relative">
-                  <Image 
-                    src={service.image} 
-                    alt={service.title} 
-                    fill 
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800">{service.title}</h3>
-                  <p className="text-gray-700 mb-4">{service.description}</p>
-                  <Link href="/services" className="text-blue-600 font-medium hover:underline">
-                    Learn more →
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-px bg-slate-200 sm:grid-cols-3">
+          {[{value: "1:1", label: "Private advisor sessions"}, {value: "15–40 min", label: "Flexible session lengths"}, {value: "One account", label: "Website, app and community"}].map(item => <div key={item.label} className="bg-white px-6 py-7 text-center"><p className="text-2xl font-bold text-slate-950">{item.value}</p><p className="mt-1 text-sm text-slate-500">{item.label}</p></div>)}
         </div>
       </section>
 
-      {/* Why Choose Us */}
-      <section className="py-16 bg-gray-100">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Why Choose Workspherepulse</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { 
-                title: "Expert Advisors", 
-                description: "Connect with verified advisors and book one-to-one sessions based on your specific issue or requirement.",
-                icon: ShieldCheckIcon
-              },
-              { 
-                title: "Pay Per Session", 
-                description: "Choose an advisor, view their rate, and pay only for the session you book—no subscriptions required.",
-                icon: ClockIcon
-              },
-              { 
-                title: "Safe PayPal Payments", 
-                description: "Payments are processed securely via PayPal, ensuring buyer protection and a trusted checkout experience.",
-                icon: CurrencyDollarIcon
-              },
-              { 
-                title: "Secure Zoom Meetings", 
-                description: "All sessions are conducted through secure, scheduled Zoom meetings set up directly by our platform",
-                icon: CheckBadgeIcon
-              }
-            ].map((item, index) => (
-              <div key={index} className="text-center p-6 bg-white rounded-lg shadow-sm">
-                <div className="flex justify-center mb-4">
-                  <item.icon className="h-12 w-12 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">{item.title}</h3>
-                <p className="text-gray-700">{item.description}</p>
-              </div>
-            ))}
-          </div>
+      <section className="bg-slate-50 py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="max-w-3xl"><p className="eyebrow">Support for real work challenges</p><h2 className="section-title mt-3">Find clear next steps, with guidance built around your situation.</h2><p className="section-copy mt-5">Browse focused areas of support, review advisor expertise and book a time that fits your schedule.</p></div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{services.map(service => <article key={service.title} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><div className="relative h-52 overflow-hidden"><Image src={service.image} alt="" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-105"/></div><div className="p-6"><h3 className="text-xl font-bold text-slate-950">{service.title}</h3><p className="mt-3 leading-6 text-slate-600">{service.description}</p><Link href="/program/advisors" className="mt-5 inline-flex items-center gap-2 font-bold text-[#69705a]">Find an advisor <ArrowRightIcon className="h-4 w-4"/></Link></div></article>)}</div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Meet Our Advisors</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Sarah Johnson",
-                location: "Downtown",
-                quote: "lorem ipsum some text"
-              },
-              {
-                name: "Michael Davis",
-                location: "Westside",
-                quote: "lorem ipsum some text"
-              },
-              {
-                name: "Michael Davis",
-                location: "Westside",
-                quote: "lorem ipsum some text"
-              },
-              {
-                name: "Michael Davis",
-                location: "Westside",
-                quote: "lorem ipsum some text"
-              },
-              {
-                name: "Michael Davis",
-                location: "Westside",
-                quote: "lorem ipsum some text"
-              },
-              {
-                name: "Jennifer Smith",
-                location: "Northside",
-                quote: "lorem ipsum some text"
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-gray-100 p-6 rounded-lg border border-gray-200">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-white font-bold">{testimonial.name.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800">{testimonial.name}</h3>
-                    <p className="text-gray-600 text-sm">{testimonial.location}</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 italic">"{testimonial.quote}"</p>
-                <div className="flex mt-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center"><div><p className="eyebrow">A simpler way to get support</p><h2 className="section-title mt-3">From searching to meeting, every step stays clear.</h2><p className="section-copy mt-5">Choose the type of support you need. Workspherepulse keeps profiles, availability, payment and meeting details connected.</p><Link href="/signup" className="mt-8 inline-flex items-center gap-2 rounded-full bg-slate-950 px-6 py-3 font-bold text-white transition hover:bg-slate-800">Create your account <ArrowRightIcon className="h-4 w-4"/></Link></div><ol className="space-y-4">{[
+            {title: "Discover the right advisor", text: "Search approved profiles by expertise, rate and availability.", icon: UserGroupIcon},
+            {title: "Choose your session", text: "Select a date, local time and session length with transparent pricing.", icon: CalendarDaysIcon},
+            {title: "Pay securely", text: "Complete checkout through Stripe before the appointment is confirmed.", icon: CreditCardIcon},
+            {title: "Meet online", text: "Open the scheduled meeting from your dashboard when it is time to join.", icon: VideoCameraIcon},
+          ].map((step, index) => <li key={step.title} className="flex gap-5 rounded-3xl border border-slate-200 bg-slate-50 p-5"><div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#69705a] text-white"><step.icon className="h-6 w-6"/></div><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Step {index + 1}</p><h3 className="mt-1 text-lg font-bold text-slate-950">{step.title}</h3><p className="mt-1 text-slate-600">{step.text}</p></div></li>)}</ol></div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 bg-blue-600 text-white">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">Apply as an Advisor</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">We invite you to apply as an advisor. Our platform connects advisors with users seeking reliable guidance Apply to join our advisor network, showcase your experience, and start supporting users through one-to-one sessions and consultations.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/contact" className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-6 rounded-md transition-colors">
-              Join Workspherepulse
-            </Link>
-            <a href="tel:+15551234567" className="border-2 border-white hover:bg-white/10 text-white font-bold py-3 px-6 rounded-md transition-colors">
-              Call (555) 123-4567
-            </a>
-          </div>
-        </div>
+      <section className="bg-[#eff0ea] py-24">
+        <div className="mx-auto max-w-7xl px-6"><div className="text-center"><p className="eyebrow">Designed for trust</p><h2 className="section-title mx-auto mt-3 max-w-3xl">Professional support without hidden steps.</h2></div><div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">{benefits.map(item => <div key={item.title} className="rounded-3xl bg-white p-6 shadow-sm"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#69705a]/10 text-[#59604c]"><item.icon className="h-6 w-6"/></div><h3 className="mt-5 text-lg font-bold text-slate-950">{item.title}</h3><p className="mt-2 leading-6 text-slate-600">{item.description}</p></div>)}</div></div>
+      </section>
+
+      <section className="bg-slate-950 py-24 text-white">
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 lg:grid-cols-2"><div className="rounded-3xl border border-white/10 bg-white/5 p-8"><ChatBubbleLeftRightIcon className="h-9 w-9 text-[#d5a1ab]"/><h2 className="mt-6 text-3xl font-bold">Talk with a human advisor</h2><p className="mt-4 leading-7 text-slate-300">Book private video guidance with an approved professional whose experience matches your workplace challenge.</p><Link href="/program/advisors" className="mt-7 inline-flex items-center gap-2 font-bold text-white">Browse advisors <ArrowRightIcon className="h-4 w-4"/></Link></div><div className="rounded-3xl border border-white/10 bg-white/5 p-8"><SparklesIcon className="h-9 w-9 text-[#d5a1ab]"/><h2 className="mt-6 text-3xl font-bold">Use the AI advisor</h2><p className="mt-4 leading-7 text-slate-300">Start a timed AI session for immediate structured reflection and practical prompts between human appointments.</p><Link href="/program/messages" className="mt-7 inline-flex items-center gap-2 font-bold text-white">Open AI sessions <ArrowRightIcon className="h-4 w-4"/></Link></div></div>
+      </section>
+
+      <section className="bg-white py-24">
+        <div className="mx-auto max-w-5xl px-6 text-center"><p className="eyebrow">Join Workspherepulse</p><h2 className="section-title mt-3">Make your next workplace decision with more clarity.</h2><p className="section-copy mx-auto mt-5 max-w-2xl">Create one account for advisor sessions, AI support and the Workspherepulse community.</p><div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"><Link href="/signup" className="rounded-full bg-[#69705a] px-7 py-3 font-bold text-white transition hover:bg-[#59604c]">Create an account</Link><Link href="/program/onboard" className="rounded-full border border-slate-300 bg-white px-7 py-3 font-bold text-slate-800 transition hover:border-slate-500">Apply as an advisor</Link></div></div>
       </section>
     </div>
   );

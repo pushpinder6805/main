@@ -65,9 +65,9 @@ export default function PrivacyPolicy() {
             <h2 className="text-black">9. Contact Us</h2>
             <p className="text-black">If you have questions or concerns about our Privacy Policy or data practices, please contact us at:</p>
             <p className="text-black">
-              Email: privacy@workspherepulse.com<br />
-              Phone: (555) 123-4567<br />
-              Address: 123 Lorem ipsum, Anytown, ST 12345
+              Email: admin@workspherepulse.com<br />
+              Company: Workspherepulse LLC<br />
+              Registered address: 3112 Centerville Rd, Greenville, DE 19807, USA
             </p>
             
             <p className="text-sm text-black mt-8">Last updated: {new Date().toLocaleDateString()}</p>

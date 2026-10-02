@@ -1,24 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import LiveChat from "./components/LiveChat";
 import { AuthProvider } from "./contexts/AuthContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "WorkspherePulse | Professional Meeting Platform",
-  description: "Connect with professionals for consultations and meetings. Book verified experts for personalized sessions.",
+  metadataBase: new URL("https://workspherepulse.com"),
+  title: {
+    default: "Workspherepulse | Workplace Guidance & Advisor Sessions",
+    template: "%s | Workspherepulse",
+  },
+  description: "Book private sessions with approved workplace advisors, access AI guidance and join the Workspherepulse professional community.",
+  openGraph: {
+    title: "Workspherepulse",
+    description: "Professional guidance for navigating workplace challenges.",
+    url: "https://workspherepulse.com",
+    siteName: "Workspherepulse",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="antialiased">
         <AuthProvider>
           <Header />
           <main>{children}</main>

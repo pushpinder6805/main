@@ -26,7 +26,7 @@ export default function SellerFAQ() {
                 <li>Provides lawful professional services</li>
                 <li>Agrees to our Seller Terms and policies</li>
                 <li>Agrees to our Seller Acceptable Use Policy (AUP)</li>
-                <li>Complies with PayPal's policies</li>
+                <li>Complies with applicable payment-services rules</li>
               </ul>
               <p className="text-black">
                 <strong>Seller AUP:</strong><br />
@@ -44,7 +44,7 @@ export default function SellerFAQ() {
               <h2 className="text-2xl font-bold text-black mb-4">4. How and when do I get paid?</h2>
               <ul className="list-disc pl-6 space-y-2 text-black">
                 <li>Users pay at the time of booking.</li>
-                <li>Payment is processed securely via PayPal.</li>
+                <li>Payment is processed securely by our payment provider.</li>
                 <li>Payout is released after successful completion of the scheduled meeting.</li>
                 <li>If a dispute is raised, payout may be temporarily held until resolution.</li>
               </ul>
@@ -102,7 +102,7 @@ export default function SellerFAQ() {
                 <li>Fraudulent or deceptive services</li>
                 <li>Adult or explicit services</li>
                 <li>Gambling or high-risk financial schemes</li>
-                <li>Services violating PayPal's Acceptable Use Policy</li>
+                <li>Services prohibited by our payment provider</li>
               </ul>
               <p className="text-black">
                 <strong>Full details:</strong><br />
@@ -134,14 +134,14 @@ export default function SellerFAQ() {
                 <li>Policy violations</li>
                 <li>Fraud or payment abuse</li>
                 <li>Misrepresentation of qualifications</li>
-                <li>Violating PayPal's policies</li>
+                <li>Violating payment-services rules</li>
               </ul>
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold text-black mb-4">13. Do I need to comply with PayPal policies?</h2>
+              <h2 className="text-2xl font-bold text-black mb-4">13. Do I need to comply with payment-services rules?</h2>
               <p className="text-black mb-3"><strong>Yes.</strong></p>
-              <p className="text-black">By using the platform, you agree to comply with PayPal's terms, including their Acceptable Use Policy. Violations may result in payment restrictions or account termination.</p>
+              <p className="text-black">By using the platform, you agree to comply with our payment provider's terms and applicable payment-network rules. Violations may result in payment restrictions or account termination.</p>
             </div>
 
             <div>

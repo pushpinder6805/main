@@ -1,212 +1,45 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import { useAuth } from "@/app/contexts/AuthContext";
+import Link from "next/link";
+import {useState} from "react";
+import {ChevronDownIcon, XMarkIcon, Bars3Icon} from "@heroicons/react/24/outline";
+import {useAuth} from "@/app/contexts/AuthContext";
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [programDropdownOpen, setProgramDropdownOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [programOpen, setProgramOpen] = useState(false);
+  const {user, logout} = useAuth();
+  const advisor = user?.type === "advisor";
 
-  return (
-    <header className="bg-white shadow-sm">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/images/logo.png"
-              alt="Worksphere Pulse"
-              width={80}
-              height={30}
-              priority
-            />
-          </Link>
+  const programLinks = advisor ? [
+    ["Advisor dashboard", "/program/advisor-dashboard"],
+    ["My meetings", "/program/appointments"],
+  ] : [
+    ["Browse advisors", "/program/advisors"],
+    ["My dashboard", "/program/dashboard"],
+    ["Appointments", "/program/appointments"],
+    ["AI sessions", "/program/messages"],
+    ["Become an advisor", "/program/onboard"],
+  ];
 
-
-          <nav className="hidden md:flex space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium">
-              Home
-            </Link>
-            <div className="relative">
-              <button
-                onClick={() => setProgramDropdownOpen(!programDropdownOpen)}
-                className="text-gray-700 hover:text-blue-600 font-medium flex items-center gap-1"
-              >
-                Program
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {programDropdownOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setProgramDropdownOpen(false)}
-                  />
-                  <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg py-2 w-56 z-50">
-                    {user?.type !== 'advisor' && <Link href="/program/advisors" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Browse Advisors</Link>}
-                    <Link href="/program/dashboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                      My Dashboard
-                    </Link>
-                    <Link href="/program/appointments" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
-                      My Appointments
-                    </Link>
-                    {user?.type !== 'advisor' && <Link href="/program/messages" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">AI sessions</Link>}
-                    <div className="border-t border-gray-200 my-2"></div>
-                    {user?.type !== 'advisor' && <Link href="/program/onboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Become an Advisor</Link>}
-                    {user?.type === 'advisor' && <Link href="/program/advisor-dashboard" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">Advisor Dashboard</Link>}
-                  </div>
-                </>
-              )}
-            </div>
-            <Link href="/about" className="text-gray-700 hover:text-blue-600 font-medium">
-              About
-            </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-blue-600 font-medium">
-              Contact
-            </Link>
-          </nav>
-          
-          <div className="flex items-center gap-4">
-            {user ? (
-              <>
-                <div className="hidden md:flex items-center gap-4">
-                  <span className="text-gray-700 font-medium">
-                    {user.name || user.username}
-                  </span>
-                  <button
-                    onClick={logout}
-                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  className="hidden md:block bg-white hover:bg-gray-100 text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-lg font-medium transition-colors"
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
-
-            <button
-              className="md:hidden text-gray-700"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
+  return <header className="sticky top-0 z-[60] border-b border-slate-200/80 bg-white/95 shadow-[0_1px_20px_rgba(15,23,42,0.04)] backdrop-blur">
+    <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-6">
+      <Link href="/" className="flex items-center gap-3" aria-label="Workspherepulse home"><Image src="/images/logo.png" alt="" width={104} height={40} priority className="h-auto w-[104px]"/></Link>
+      <nav className="hidden items-center gap-8 md:flex" aria-label="Primary navigation">
+        <Link href="/" className="nav-link">Home</Link>
+        <div className="relative"><button type="button" onClick={() => setProgramOpen(value => !value)} className="nav-link inline-flex items-center gap-1" aria-expanded={programOpen}>Program <ChevronDownIcon className={`h-4 w-4 transition ${programOpen ? "rotate-180" : ""}`}/></button>{programOpen && <><button aria-label="Close menu" className="fixed inset-0 z-40 cursor-default" onClick={() => setProgramOpen(false)}/><div className="absolute left-1/2 top-full z-50 mt-4 w-64 -translate-x-1/2 rounded-2xl border border-slate-200 bg-white p-2 shadow-xl">{programLinks.map(([label, href]) => <Link key={href} href={href} onClick={() => setProgramOpen(false)} className="block rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-950">{label}</Link>)}</div></>}
         </div>
-        
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-4 py-4 border-t border-gray-200">
-            <nav className="flex flex-col space-y-4">
-              <Link
-                href="/"
-                className="text-gray-700 hover:text-blue-600 font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <div>
-                <p className="text-gray-700 font-medium mb-2">Program</p>
-                <div className="pl-4 space-y-2">
-                  <Link
-                    href="/program/login"
-                    className="block text-gray-600 hover:text-blue-600"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  {user?.type !== 'advisor' && <Link
-                    href="/program/advisors"
-                    className="block text-gray-600 hover:text-blue-600"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Browse Advisors
-                  </Link>}
-                  <Link
-                    href="/program/dashboard"
-                    className="block text-gray-600 hover:text-blue-600"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    My Dashboard
-                  </Link>
-                  {user?.type !== 'advisor' && <Link
-                    href="/program/onboard"
-                    className="block text-gray-600 hover:text-blue-600"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Become an Advisor
-                  </Link>}
-                </div>
-              </div>
-              <Link
-                href="/about"
-                className="text-gray-700 hover:text-blue-600 font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-700 hover:text-blue-600 font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Contact
-              </Link>
-              {user ? (
-                <div className="flex flex-col gap-2">
-                  <div className="text-gray-700 font-medium px-4 py-2">
-                    {user.name || user.username}
-                  </div>
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      logout();
-                    }}
-                    className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-medium transition-colors text-center"
-                  >
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  <Link
-                    href="/login"
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors text-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/signup"
-                    className="bg-white hover:bg-gray-100 text-blue-600 border-2 border-blue-600 px-6 py-2 rounded-lg font-medium transition-colors text-center"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Sign Up
-                  </Link>
-                </div>
-              )}
-            </nav>
-          </div>
-        )}
-      </div>
-    </header>
-  );
-} 
+        <Link href="/about" className="nav-link">About</Link>
+        <Link href="/contact" className="nav-link">Contact</Link>
+      </nav>
+      <div className="hidden items-center gap-3 md:flex">{user ? <><span className="max-w-40 truncate text-sm font-semibold text-slate-600">{user.name || user.username}</span><button onClick={logout} className="rounded-full border border-slate-300 px-5 py-2.5 text-sm font-bold text-slate-800 transition hover:border-slate-500">Sign out</button></> : <><Link href="/login" className="rounded-full px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100">Sign in</Link><Link href="/signup" className="rounded-full bg-[#69705a] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#59604c]">Create account</Link></>}</div>
+      <button type="button" className="rounded-xl border border-slate-200 p-2.5 text-slate-800 md:hidden" onClick={() => setMobileOpen(value => !value)} aria-expanded={mobileOpen} aria-label="Toggle navigation">{mobileOpen ? <XMarkIcon className="h-6 w-6"/> : <Bars3Icon className="h-6 w-6"/>}</button>
+    </div>
+    {mobileOpen && <nav className="border-t border-slate-200 bg-white px-5 py-5 md:hidden" aria-label="Mobile navigation"><div className="mx-auto max-w-7xl space-y-1"><MobileLink href="/" close={() => setMobileOpen(false)}>Home</MobileLink><p className="px-3 pb-1 pt-4 text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Program</p>{programLinks.map(([label, href]) => <MobileLink key={href} href={href} close={() => setMobileOpen(false)}>{label}</MobileLink>)}<MobileLink href="/about" close={() => setMobileOpen(false)}>About</MobileLink><MobileLink href="/contact" close={() => setMobileOpen(false)}>Contact</MobileLink><div className="mt-4 grid gap-2 border-t border-slate-200 pt-4">{user ? <button onClick={() => {setMobileOpen(false); logout();}} className="rounded-xl bg-slate-950 px-4 py-3 text-center font-bold text-white">Sign out</button> : <><MobileLink href="/login" close={() => setMobileOpen(false)}>Sign in</MobileLink><Link href="/signup" onClick={() => setMobileOpen(false)} className="rounded-xl bg-[#69705a] px-4 py-3 text-center font-bold text-white">Create account</Link></>}</div></div></nav>}
+  </header>;
+}
+
+function MobileLink({href, close, children}: {href: string; close: () => void; children: React.ReactNode}) {
+  return <Link href={href} onClick={close} className="block rounded-xl px-3 py-3 font-semibold text-slate-700 hover:bg-slate-100">{children}</Link>;
+}

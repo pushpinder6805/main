@@ -19,7 +19,7 @@ export default function SellerAUP() {
             </p>
 
             <h2 className="text-black">1. Purpose</h2>
-            <p className="text-black">This Seller Acceptable Use Policy ("AUP") sets forth the rules and standards that all sellers must follow when offering services through our platform. By registering as a seller, you agree to comply with this AUP, our Seller Terms, and all applicable laws and payment processor policies, including PayPal's Acceptable Use Policy.</p>
+            <p className="text-black">This Seller Acceptable Use Policy ("AUP") sets forth the rules and standards that all advisors must follow when offering services through our platform. By registering as an advisor, you agree to comply with this AUP, our Seller Terms, all applicable laws and the rules of our payment provider.</p>
 
             <h2 className="text-black">2. Permitted Services</h2>
             <p className="text-black">Sellers may offer lawful professional services, consultations, or scheduled meetings that:</p>
@@ -27,7 +27,7 @@ export default function SellerAUP() {
               <li>Are accurately described</li>
               <li>Are delivered as scheduled</li>
               <li>Do not violate any applicable laws or regulations</li>
-              <li>Comply with PayPal's Acceptable Use Policy</li>
+              <li>Comply with applicable payment-services rules</li>
             </ul>
 
             <h2 className="text-black">3. Prohibited Activities</h2>
@@ -92,14 +92,14 @@ export default function SellerAUP() {
             </ul>
             <p className="text-black">Repeated violations may result in permanent removal from the platform.</p>
 
-            <h2 className="text-black">7. Compliance with PayPal Policies</h2>
-            <p className="text-black">Sellers must comply with:</p>
+            <h2 className="text-black">7. Payment Services Compliance</h2>
+            <p className="text-black">Advisors must comply with:</p>
             <ul className="text-black">
-              <li>PayPal's Acceptable Use Policy</li>
-              <li>PayPal Seller Protection policies</li>
+              <li>Our payment provider's services agreement</li>
+              <li>Payment-network and dispute policies</li>
               <li>Applicable financial and anti-fraud regulations</li>
             </ul>
-            <p className="text-black">Violation of PayPal's policies may result in immediate suspension.</p>
+            <p className="text-black">Violation of payment-services rules may result in immediate suspension.</p>
 
             <h2 className="text-black">8. Data Protection & Privacy</h2>
             <p className="text-black">Sellers must:</p>

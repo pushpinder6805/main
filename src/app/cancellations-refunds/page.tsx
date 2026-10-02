@@ -24,7 +24,7 @@ export default function ServiceGuarantee() {
             <ul className="text-black space-y-2">
               <li>All meetings must be booked and paid for through the WorkspherePulse platform.</li>
               <li>Users receive confirmation of the scheduled date, time, and seller details.</li>
-              <li>Payment is securely processed via PayPal at the time of booking.</li>
+              <li>Payment is securely processed by our payment provider at the time of booking.</li>
             </ul>
 
             <h2 className="text-black font-bold">2. Verified Meeting Attendance (Zoom Integration)</h2>
@@ -102,8 +102,8 @@ export default function ServiceGuarantee() {
 
             <h2 className="text-black font-bold">8. Compliance</h2>
             <ul className="text-black space-y-2">
-              <li>All transactions are processed in accordance with PayPal policies.</li>
-              <li>Sellers must comply with WorkspherePulse policies and PayPal's Acceptable Use Policy.</li>
+              <li>All transactions are processed in accordance with our payment provider's policies.</li>
+              <li>Advisors must comply with Workspherepulse policies and applicable payment-services rules.</li>
             </ul>
 
             <h2 className="text-black font-bold">9. Contact Support</h2>
