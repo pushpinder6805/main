@@ -1,79 +1,18 @@
-export default function PrivacyPolicy() {
-  return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <section className="bg-blue-600 py-16 text-white">
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
-          <p className="text-xl max-w-2xl">How we collect, use, and protect your personal information.</p>
-        </div>
-      </section>
+import {ArticleLayout, ArticleSection, CheckList, InfoHero} from "@/app/components/InfoPage";
 
-      {/* Privacy Content */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <div className="prose prose-lg max-w-none text-black">
-            <h2 className="text-black">1. Information We Collect</h2>
-            <p className="text-black">We collect personal information that you provide to us, including:</p>
-            <ul className="text-black">
-              <li>Contact information (name, address, phone number, email)</li>
-              <li>Service location details</li>
-              <li>Billing and payment information</li>
-              <li>Service history and preferences</li>
-              <li>Communications with our team</li>
-            </ul>
-            
-            <h2 className="text-black">2. How We Use Your Information</h2>
-            <p className="text-black">We use the information we collect to:</p>
-            <ul className="text-black">
-              <li>Communicate with you about appointments and services</li>
-              <li>Process payments and maintain accounts</li>
-              <li>Send service reminders and maintenance recommendations</li>
-              <li>Respond to your inquiries and support needs</li>
-              <li>Comply with legal obligations</li>
-            </ul>
-            
-            <h2 className="text-black">3. Information Sharing</h2>
-            <p className="text-black">We do not sell or rent your personal information to third parties. We may share information with:</p>
-            <ul className="text-black">
-              <li>Service providers who assist in our business operations</li>
-              <li>Professional advisors such as lawyers and accountants</li>
-              <li>Government authorities when required by law</li>
-            </ul>
-            
-            <h2 className="text-black">4. Data Security</h2>
-            <p className="text-black">We implement reasonable security measures to protect your personal information from unauthorized access, disclosure, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure.</p>
-            
-            <h2 className="text-black">5. Your Rights</h2>
-            <p className="text-black">You have the right to:</p>
-            <ul className="text-black">
-              <li>Access your personal information</li>
-              <li>Correct inaccurate information</li>
-              <li>Request deletion of your information</li>
-              <li>Opt-out of marketing communications</li>
-            </ul>
-            
-            <h2 className="text-black">6. Cookies and Tracking</h2>
-            <p className="text-black">Our website may use cookies and similar technologies to enhance your experience and collect information about how you use our site. You can manage your cookie preferences through your browser settings.</p>
-            
-            <h2 className="text-black">7. Children's Privacy</h2>
-            <p className="text-black">Our services are not directed to individuals under 18 years of age. We do not knowingly collect personal information from children.</p>
-            
-            <h2 className="text-black">8. Changes to This Policy</h2>
-            <p className="text-black">We may update this Privacy Policy periodically to reflect changes in our practices or legal requirements. We will post the revised policy on our website with the effective date.</p>
-            
-            <h2 className="text-black">9. Contact Us</h2>
-            <p className="text-black">If you have questions or concerns about our Privacy Policy or data practices, please contact us at:</p>
-            <p className="text-black">
-              Email: admin@workspherepulse.com<br />
-              Company: Workspherepulse LLC<br />
-              Registered address: 3112 Centerville Rd, Greenville, DE 19807, USA
-            </p>
-            
-            <p className="text-sm text-black mt-8">Last updated: {new Date().toLocaleDateString()}</p>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-} 
+export default function PrivacyPage() {
+  return <main className="min-h-screen">
+    <InfoHero eyebrow="Privacy" title="How Workspherepulse handles your information." description="A clear overview of the information we collect, why we use it and the choices available to you." />
+    <ArticleLayout label="Website, app and community users">
+      <ArticleSection number="01" title="Information we collect"><p>We collect information you provide and information generated when you use Workspherepulse.</p><CheckList items={["Account and contact information, such as name, username and email.","Advisor profile, expertise, availability and onboarding information.","Booking, session, payment status and service history.","Messages and support communications.","Device, security and usage information needed to operate and protect the services."]}/><p>Payment-card details are handled by the payment provider and are not stored directly by Workspherepulse.</p></ArticleSection>
+      <ArticleSection number="02" title="How we use information"><CheckList items={["Create and secure accounts.","Arrange sessions and display booking details.","Process payments, refunds and advisor payouts.","Verify service delivery and resolve disputes.","Provide support and service notifications.","Prevent fraud, enforce policies and meet legal obligations.","Improve the reliability and usability of Workspherepulse."]}/></ArticleSection>
+      <ArticleSection number="03" title="When information is shared"><p>We do not sell personal information. We may share the information necessary to operate the platform with advisors involved in a booking, payment and meeting providers, hosting and communication services, professional advisers, or authorities where required by law.</p></ArticleSection>
+      <ArticleSection number="04" title="Data security and retention"><p>We use administrative, technical and organisational safeguards designed to protect information. No internet system can guarantee absolute security. We retain information for as long as needed to provide services, resolve disputes, meet financial and legal requirements, and protect the platform.</p></ArticleSection>
+      <ArticleSection number="05" title="Your choices and rights"><p>Depending on your location, you may have rights to access, correct, delete, restrict or receive a copy of personal information, and to object to certain uses.</p><p>Send a request from your registered email address to <a href="mailto:admin@workspherepulse.com" className="font-bold text-[#59604c]">admin@workspherepulse.com</a>. We may need to verify your identity.</p></ArticleSection>
+      <ArticleSection number="06" title="Cookies and similar technologies"><p>The website may use cookies or local storage required for account sessions, security, preferences and service measurement. Browser controls can limit optional storage, but disabling essential storage may prevent sign-in or other features from working.</p></ArticleSection>
+      <ArticleSection number="07" title="Children"><p>Workspherepulse is intended for adults and is not directed to anyone under 18. We do not knowingly collect personal information from children.</p></ArticleSection>
+      <ArticleSection number="08" title="International services"><p>Workspherepulse may use providers and infrastructure in countries different from your own. Where required, we use appropriate measures for international data transfers.</p></ArticleSection>
+      <ArticleSection number="09" title="Changes and contact"><p>We may update this policy as services and legal requirements change. The current version will remain available on this page.</p><p><strong>Workspherepulse LLC</strong><br/>3112 Centerville Rd, Greenville, DE 19807, USA<br/><a href="mailto:admin@workspherepulse.com" className="font-bold text-[#59604c]">admin@workspherepulse.com</a></p></ArticleSection>
+    </ArticleLayout>
+  </main>;
+}

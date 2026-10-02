@@ -1,81 +1,17 @@
-export default function ServiceGuarantee() {
-  return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <section className="bg-blue-600 py-16 text-white">
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-4">Service Delivery Guarantee & Customer Support</h1>
-          <p className="text-xl max-w-2xl">Our commitment to quality service and reliable support</p>
-        </div>
-      </section>
+import Link from "next/link";
+import {ClockIcon, ShieldCheckIcon, VideoCameraIcon} from "@heroicons/react/24/outline";
+import {ArticleLayout, ArticleSection, CheckList, InfoHero, PageCTA} from "@/app/components/InfoPage";
 
-      {/* Content */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <div className="prose prose-lg max-w-none text-black">
-            <h2 className="text-black font-bold">1. Service Delivery Guarantee</h2>
-            <p className="text-black mb-3">
-              We are committed to delivering all booked consultation sessions in a timely, professional, and reliable manner.
-            </p>
-            <p className="text-black mb-3">
-              All sessions are scheduled in advance and conducted digitally via secure video conferencing (Zoom). Once a booking is confirmed, users will receive session details including date, time, and access link.
-            </p>
-            <p className="text-black mb-3">
-              In the event that a session cannot be delivered as scheduled due to technical issues or advisor unavailability, we will:
-            </p>
-            <ul className="text-black space-y-2 mb-3">
-              <li>Offer a rescheduled session at no additional cost, or</li>
-              <li>Provide a full refund upon request</li>
-            </ul>
-            <p className="text-black mb-3">
-              We ensure that all advisors are vetted and qualified to deliver non-medical wellbeing, stress management, and personal development guidance.
-            </p>
-            <p className="text-black mb-6">
-              <strong>Our services are non-clinical and intended for general wellbeing support only.</strong>
-            </p>
-
-            <h2 className="text-black font-bold">2. Customer Support Tools</h2>
-            <p className="text-black mb-3">
-              We provide multiple support channels to ensure a smooth user experience:
-            </p>
-            <ul className="text-black space-y-2 mb-3">
-              <li>Email Support: admin@workspherepulse.com</li>
-              <li>Platform-based messaging system</li>
-              <li>FAQ / Help Center</li>
-              <li>Booking management dashboard for users</li>
-            </ul>
-            <p className="text-black mb-6">
-              Support requests are typically responded to within 24–48 hours.
-            </p>
-
-            <h2 className="text-black font-bold">3. Booking, Cancellation & Refund Policy</h2>
-            <p className="text-black mb-3">
-              Users may cancel or reschedule sessions within a defined time window prior to the scheduled session.
-            </p>
-            <p className="text-black mb-3">
-              Refunds are issued under the following conditions:
-            </p>
-            <ul className="text-black space-y-2 mb-3">
-              <li>Session not delivered due to platform or advisor issues</li>
-              <li>Cancellation within the allowed timeframe</li>
-            </ul>
-            <p className="text-black mb-6">
-              <strong>No-shows or late cancellations may not be eligible for refunds.</strong>
-            </p>
-
-            <h2 className="text-black font-bold">4. About Us</h2>
-            <p className="text-black mb-3">
-              We operate an online platform offering paid one-to-one wellbeing and stress management consultation sessions designed for workplace environments.
-            </p>
-            <p className="text-black mb-3">
-              Our services are delivered by vetted human advisors and supported by an AI-powered advisory assistant. All services are non-medical and focus on general wellbeing, personal development, and stress management guidance aligned with each user's individual expectations and goals.
-            </p>
-            <p className="text-black mb-6">
-              Sessions are conducted digitally via our platform using Zoom for secure and reliable communication.
-            </p>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+export default function ServiceGuaranteePage() {
+  return <main className="min-h-screen">
+    <InfoHero eyebrow="Our commitment" title="Service delivery you can understand and trust." description="How Workspherepulse confirms sessions, supports users and responds when a booked service cannot be delivered as expected." action={{label:"Contact support",href:"/contact"}} />
+    <section className="border-b border-slate-200 bg-white"><div className="mx-auto grid max-w-6xl gap-px bg-slate-200 px-6 sm:grid-cols-3">{[{icon:ShieldCheckIcon,title:"Approved advisors",text:"Applications are reviewed before booking access."},{icon:VideoCameraIcon,title:"Verified sessions",text:"Meeting activity helps confirm delivery."},{icon:ClockIcon,title:"Responsive support",text:"Most requests receive a reply within 24–48 hours."}].map(item => <div key={item.title} className="bg-white px-6 py-8"><item.icon className="h-7 w-7 text-[#69705a]"/><h2 className="mt-4 font-bold text-slate-950">{item.title}</h2><p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p></div>)}</div></section>
+    <ArticleLayout label="Customers and advisors">
+      <ArticleSection number="01" title="Service delivery guarantee"><p>Booked consultations are scheduled in advance and conducted digitally through the meeting details shown in your account.</p><p>If a session cannot be delivered because of a platform issue or advisor unavailability, we will review the booking and may:</p><CheckList items={["Offer a rescheduled session at no additional cost.","Provide a full refund to the original payment method when appropriate."]}/><p className="rounded-2xl bg-amber-50 p-4 text-sm text-amber-900"><strong>Scope:</strong> Workspherepulse provides non-clinical workplace wellbeing and professional-development guidance.</p></ArticleSection>
+      <ArticleSection number="02" title="Customer support"><p>Support is available for account access, bookings, payments, meetings and advisor applications.</p><CheckList items={[<>Email <a className="font-bold text-[#59604c]" href="mailto:admin@workspherepulse.com">admin@workspherepulse.com</a>.</>,"Use your booking dashboard to review session details.","Include your username and booking date when contacting us about a session."]}/><p>Most requests receive a response within 24–48 hours. Urgent same-day meeting issues are prioritised.</p></ArticleSection>
+      <ArticleSection number="03" title="Cancellations and refunds"><p>Eligibility depends on the booking status, timing, attendance information and reason for the request.</p><CheckList items={["A session not delivered because of a confirmed platform or advisor issue may qualify for a refund.","Approved refunds return to the original payment method.","No-shows or late cancellations may not qualify for a refund."]}/><Link href="/cancellations-refunds" className="inline-flex font-bold text-[#59604c]">Read the full cancellations and refunds policy →</Link></ArticleSection>
+      <ArticleSection number="04" title="How sessions work"><p>Workspherepulse offers paid one-to-one sessions for workplace wellbeing, communication, stress management and professional growth. Approved human advisors provide scheduled guidance, while the AI advisor offers separate timed sessions.</p><p>Session access, payment state and meeting details remain connected to your Workspherepulse account.</p></ArticleSection>
+    </ArticleLayout>
+    <PageCTA title="Need help with a booked session?" description="Send our team the username and scheduled date so we can review the correct booking." primary={{label:"Contact support",href:"/contact"}} secondary={{label:"View appointments",href:"/program/appointments"}} />
+  </main>;
 }

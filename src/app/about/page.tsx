@@ -1,125 +1,28 @@
-import Link from "next/link";
 import Image from "next/image";
+import {
+  ChatBubbleLeftRightIcon,
+  HeartIcon,
+  LockClosedIcon,
+  UserGroupIcon,
+} from "@heroicons/react/24/outline";
+import {InfoHero, PageCTA} from "@/app/components/InfoPage";
 
-export default function About() {
-  return (
-    <div className="min-h-screen">
-      {/* About Header */}
-      <section className="bg-blue-600 py-16 text-white">
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-4">About Workspherepulse</h1>
-          <p className="text-xl max-w-2xl">WorkspherePulse is a professional platform that connects users with experienced advisors and a supportive community to address real-world workplace challenges.</p>
-        </div>
-      </section>
+const values = [
+  {title: "Human understanding", text: "Real workplace experiences deserve thoughtful, practical and respectful support.", icon: HeartIcon},
+  {title: "Trust and privacy", text: "Confidential guidance, verified accounts and clear choices shape every part of the platform.", icon: LockClosedIcon},
+  {title: "Useful next steps", text: "Support should help people move forward with greater clarity, confidence and perspective.", icon: ChatBubbleLeftRightIcon},
+];
 
-      {/* Our Story with workspherepulse */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-6 text-gray-800">Our Story</h2>
-              <p className="text-gray-700 mb-4">WorkspherePulse was founded in 2024 with a clear mission: to create a trusted space where individuals can openly discuss workplace challenges and access meaningful, professional support. What began as a discussion forum for sharing experiences and perspectives has grown into a comprehensive platform designed to support workplace wellbeing and professional growth.</p>
-              <p className="text-gray-700 mb-4">Today, WorkspherePulse brings together a secure online forum and a dedicated application that connects users with highly qualified, experienced advisors. These advisors are professionals from diverse fields who specialize in addressing real-world workplace issues such as communication challenges, leadership concerns, conflict resolution, motivation, wellbeing, and work–life balance.</p>
-              <p className="text-gray-700">Our platform enables users to seek confidential guidance through one-to-one sessions with advisors who understand the complexities of modern workplaces. Sessions are conducted securely, allowing users to choose advisors based on expertise, availability, and individual needs.</p>
-            </div>
-            <div className="relative bg-gray-200 h-[400px] rounded-lg overflow-hidden">
-              <Image 
-                src="/images/logo.png" 
-                alt="Workspherepulse Team" 
-                fill 
-                className="object-cover" 
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+export default function AboutPage() {
+  return <main className="min-h-screen bg-slate-50">
+    <InfoHero eyebrow="About Workspherepulse" title="Workplace support built around real conversations." description="Workspherepulse connects people navigating workplace challenges with approved advisors, structured AI guidance and a supportive professional community." action={{label: "Explore the community", href: "https://community.workspherepulse.com/"}} />
 
-      {/* Our Values */}
-      <section className="py-16 bg-gray-100">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Our Core Values</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Integrity",
-                description: "We believe in honest communication, transparent pricing, and doing what's right for our customers, even when it's not the most profitable option."
-              },
-              {
-                title: "Excellence",
-                description: "We strive for excellence in every job, no matter how big or small. Our team is committed to ongoing training and using the best techniques and materials."
-              },
-              {
-                title: "Reliability",
-                description: "When you schedule a service with us, you can count on us to show up on time, prepared to solve your plumbing issues efficiently and effectively."
-              }
-            ].map((value, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
-                <h3 className="text-xl font-semibold mb-3 text-gray-800">{value.title}</h3>
-                <p className="text-gray-700">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="bg-white py-20"><div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center"><div><p className="eyebrow">Our story</p><h2 className="section-title mt-3">A clearer place to talk about work.</h2><div className="mt-6 space-y-4 leading-8 text-slate-600"><p>Workspherepulse began in 2024 with a simple idea: people should have a trusted place to discuss workplace challenges and find useful support.</p><p>What started as a community for shared experience has grown into a connected platform for private advisor sessions, practical resources and timed AI guidance. Users can choose support based on expertise, availability and their own needs.</p><p>We focus on everyday workplace wellbeing, communication, leadership, conflict, motivation and work–life balance. Our services provide general professional guidance and are not a substitute for clinical or emergency care.</p></div></div><div className="relative min-h-[420px] overflow-hidden rounded-[2rem] bg-[#eff0ea]"><Image src="/images/banner.avif" alt="Sunlight through green leaves" fill sizes="(max-width: 1024px) 100vw, 45vw" className="object-cover"/><div className="absolute inset-x-5 bottom-5 rounded-2xl bg-white/90 p-5 shadow-lg backdrop-blur"><p className="text-sm font-bold text-slate-950">One connected Workspherepulse account</p><p className="mt-1 text-sm text-slate-600">Website, mobile app and professional community.</p></div></div></div></section>
 
-      {/* Our Team */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Meet Our Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { name: "John Smith", position: "Designation" },
-              { name: "Sarah Johnson", position: "Operations Manager" },
-              { name: "Michael Brown", position: "Senior Analyst" },
-              { name: "Emily Davis", position: "Customer Service Manager" }
-            ].map((member, index) => (
-              <div key={index} className="text-center">
-                <div className="relative bg-gray-200 h-64 rounded-lg mb-4 overflow-hidden">
-                  <Image 
-                    src="/images/logo.png" 
-                    alt={`${member.name} - ${member.position}`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-800">{member.name}</h3>
-                <p className="text-gray-700">{member.position}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="bg-slate-50 py-20"><div className="mx-auto max-w-6xl px-6"><div className="max-w-3xl"><p className="eyebrow">What guides us</p><h2 className="section-title mt-3">Support should feel safe, clear and useful.</h2></div><div className="mt-10 grid gap-6 md:grid-cols-3">{values.map(value => <article key={value.title} className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#69705a]/10 text-[#59604c]"><value.icon className="h-6 w-6"/></div><h3 className="mt-5 text-xl font-bold text-slate-950">{value.title}</h3><p className="mt-3 leading-7 text-slate-600">{value.text}</p></article>)}</div></div></section>
 
-      {/* Certifications */}
-      <section className="py-16 bg-gray-100">
-        <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Our Certifications & Affiliations</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="relative bg-white p-6 rounded-lg shadow-sm h-32 overflow-hidden">
-                <Image 
-                  src="/images/logo.png" 
-                  alt="Certification" 
-                  fill
-                  className="object-contain p-2" 
-                />
-              </div>
-            ))}
-          </div>
-          <p className="text-center mt-8 text-gray-700">Our advisors are highly qualified professionals who continuously update their skills and knowledge to stay current with evolving workplace practices, policies, and challenges.</p>
-        </div>
-      </section>
+    <section className="bg-[#eff0ea] py-20"><div className="mx-auto grid max-w-6xl gap-8 px-6 lg:grid-cols-3"><div className="lg:col-span-1"><UserGroupIcon className="h-9 w-9 text-[#59604c]"/><h2 className="mt-5 text-3xl font-bold text-slate-950">A platform with three ways to find support.</h2></div><div className="grid gap-4 sm:grid-cols-3 lg:col-span-2">{[{n:"01",t:"Community",d:"Learn from shared workplace experiences."},{n:"02",t:"Human advisors",d:"Book private sessions with approved professionals."},{n:"03",t:"AI guidance",d:"Use timed sessions for immediate structured reflection."}].map(item => <div key={item.n} className="rounded-3xl bg-white p-6"><p className="text-xs font-bold tracking-[0.18em] text-slate-400">{item.n}</p><h3 className="mt-5 text-lg font-bold text-slate-950">{item.t}</h3><p className="mt-2 text-sm leading-6 text-slate-600">{item.d}</p></div>)}</div></div></section>
 
-      {/* Call to Action */}
-      <section className="py-16 bg-blue-600 text-white">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Work With Our Team?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">Join us today to experience professional guidance that can make a real difference in your workplace.</p>
-          <Link href="/contact" className="bg-white hover:bg-gray-100 text-blue-600 font-bold py-3 px-6 rounded-md transition-colors">
-            Get in Touch
-          </Link>
-        </div>
-      </section>
-    </div>
-  );
-} 
+    <PageCTA title="Find the support that fits your situation." description="Browse approved advisors, join the Workspherepulse community or create an account for connected access across the platform." primary={{label:"Find an advisor",href:"/program/advisors"}} secondary={{label:"Contact us",href:"/contact"}} />
+  </main>;
+}

@@ -1,55 +1,20 @@
-export default function TermsOfService() {
-  return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <section className="bg-blue-600 py-16 text-white">
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl font-bold mb-4">Terms of Service</h1>
-          <p className="text-xl max-w-2xl">Please read these terms carefully before using our services.</p>
-        </div>
-      </section>
+import {ArticleLayout, ArticleSection, InfoHero} from "@/app/components/InfoPage";
 
-      {/* Terms Content */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <div className="prose prose-lg max-w-none text-black">
-            <h2 className="text-black">1. Acceptance of Terms</h2>
-            <p className="text-black">By accessing or using our services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
-            
-            <h2 className="text-black">2. Service Description</h2>
-            <p className="text-black">We provide professional advisory services for individuals and organizations, including one-to-one consultations, guided sessions, and expert support for workplace-related challenges. The scope and details of each service are clearly agreed upon before any session begins.</p>
-            
-            <h2 className="text-black">3. Scheduling and Appointments</h2>
-            <p className="text-black">We will make every effort to start at the scheduled appointment time. However, due to the nature of human emergencies, there may occasionally be delays. We will communicate any changes to the schedule as promptly as possible.</p>
-            
-            <h2 className="text-black">4. Estimates and Pricing</h2>
-            <p className="text-black">We provide clear session pricing based on the advisor’s rates and the services requested. Any changes to the scope of a session or additional requirements will be communicated in advance, and no adjustments will be made without your approval.</p>
-            
-            <h2 className="text-black">5. Payment Terms</h2>
-            <p className="text-black">All sessions require advance payment at the time of booking. Payments are processed securely through our platform using approved payment methods, and sessions are confirmed only after payment is successfully completed.</p>
-            
-            <h2 className="text-black">6. Warranties</h2>
-            <p className="text-black">We are committed to delivering high-quality advisory services. While individual outcomes may vary, every session is conducted professionally, and any applicable terms or guarantees are clearly communicated at the time of booking.</p>
-            
-            <h2 className="text-black">7. Customer Responsibilities</h2>
-            <p className="text-black">Users are responsible for providing accurate and complete information about their workplace concerns, participating honestly in sessions, and disclosing any relevant details that may affect the quality or outcome of the advisory service.</p>
-            
-            <h2 className="text-black">8. Cancellation Policy</h2>
-            <p className="text-black">We request at least 24 hours' notice for cancellation of scheduled appointments. Late cancellations or no-shows may incur a service fee.</p>
-            
-            <h2 className="text-black">9. Dispute Resolution</h2>
-            <p className="text-black">Any disputes arising from our services shall first be addressed through good-faith negotiation. If resolution cannot be reached, disputes will be resolved through arbitration in accordance with local laws.</p>
-            
-            <h2 className="text-black">10. Modifications to Terms</h2>
-            <p className="text-black">We reserve the right to modify these terms at any time. Changes will be effective upon posting to our website. Continued use of our services constitutes acceptance of modified terms.</p>
-            
-            <h2 className="text-black">11. Contact Information</h2>
-            <p className="text-black">If you have questions about these Terms of Service, please contact Workspherepulse LLC at admin@workspherepulse.com.</p>
-            
-            <p className="text-sm text-black mt-8">Last updated: {new Date().toLocaleDateString()}</p>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-} 
+export default function TermsPage() {
+  return <main className="min-h-screen">
+    <InfoHero eyebrow="Legal" title="Terms of Service" description="The rules that apply when you create an account, book or provide a session, use the community, or access other Workspherepulse services." />
+    <ArticleLayout label="All Workspherepulse users">
+      <ArticleSection number="01" title="Acceptance of terms"><p>By accessing or using Workspherepulse services, you agree to these Terms of Service and the policies linked from the platform. If you do not agree, do not use the services.</p></ArticleSection>
+      <ArticleSection number="02" title="Service description"><p>Workspherepulse provides a professional platform for workplace guidance, including one-to-one consultations, timed AI sessions, resources and community participation. Services are intended for general workplace wellbeing and professional development.</p></ArticleSection>
+      <ArticleSection number="03" title="Accounts and accurate information"><p>You are responsible for the accuracy of your account information, protecting access to your account and activity performed through it. Advisor accounts require completed onboarding and Workspherepulse approval.</p></ArticleSection>
+      <ArticleSection number="04" title="Scheduling and appointments"><p>Session details are agreed at booking. Users and advisors should attend on time and use the meeting access provided through the platform. Availability or technical issues may occasionally require a session to be rescheduled.</p></ArticleSection>
+      <ArticleSection number="05" title="Pricing and payment"><p>Session pricing is displayed before checkout. Paid bookings require advance payment through the platform’s approved payment method. A booking is confirmed only after payment succeeds.</p></ArticleSection>
+      <ArticleSection number="06" title="Service scope"><p>Workspherepulse and its advisors do not guarantee a particular personal or professional outcome. Guidance is non-clinical and does not replace medical, mental-health, legal, financial or emergency services.</p></ArticleSection>
+      <ArticleSection number="07" title="User responsibilities"><p>Users must provide accurate information, behave professionally, respect confidentiality and avoid unlawful, harmful or deceptive use. Advisors must also follow the Advisor Acceptable Use Policy and applicable professional requirements.</p></ArticleSection>
+      <ArticleSection number="08" title="Cancellations and refunds"><p>Cancellation, no-show, dispute and refund decisions follow the Cancellations and Refunds Policy in effect for the booking.</p></ArticleSection>
+      <ArticleSection number="09" title="Suspension and termination"><p>We may restrict or terminate access where necessary to address fraud, abuse, safety concerns, policy violations, payment risk or legal obligations.</p></ArticleSection>
+      <ArticleSection number="10" title="Disputes"><p>Parties should first attempt good-faith resolution through Workspherepulse support. Unresolved disputes will be handled under applicable law and any legally binding dispute terms.</p></ArticleSection>
+      <ArticleSection number="11" title="Changes and contact"><p>We may update these terms to reflect changes in services, law or operations. Updated terms take effect when posted, subject to applicable notice requirements.</p><p>Questions may be sent to <a href="mailto:admin@workspherepulse.com" className="font-bold text-[#59604c]">admin@workspherepulse.com</a>.</p></ArticleSection>
+    </ArticleLayout>
+  </main>;
+}
