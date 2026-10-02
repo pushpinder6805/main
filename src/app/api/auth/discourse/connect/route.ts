@@ -7,7 +7,9 @@ const COMMUNITY_ORIGIN = process.env.DISCOURSE_ORIGIN || 'https://community.work
 export async function GET(request: NextRequest) {
   const sso = request.nextUrl.searchParams.get('sso') || '';
   const sig = request.nextUrl.searchParams.get('sig') || '';
-  const secret = process.env.DISCOURSE_CONNECT_PROVIDER_SECRET || '';
+  const secret = process.env.DISCOURSE_CONNECT_PROVIDER_SECRET
+    || process.env.DISCOURSE_CONNECT_SECRET
+    || '';
   try {
     verifyConnectRequest(sso, sig, secret, COMMUNITY_ORIGIN);
     const token = request.cookies.get(SESSION_COOKIE)?.value;

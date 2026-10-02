@@ -94,10 +94,6 @@ export default function LiveChat() {
 
     setIsLoading(true);
     try {
-      console.log('Starting conversation with:', { userName, userEmail });
-      console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
-      console.log('Supabase Key exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-
       const { data, error } = await supabase
         .from('chat_conversations')
         .insert({
@@ -107,8 +103,6 @@ export default function LiveChat() {
         })
         .select()
         .single();
-
-      console.log('Insert result:', { data, error });
 
       if (error) {
         console.error('Supabase error details:', {
