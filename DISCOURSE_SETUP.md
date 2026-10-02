@@ -11,9 +11,10 @@ Configure these settings in the Discourse administration panel:
 - `discourse_connect_url`: `https://workspherepulse.com/api/auth/discourse/connect`
 - `discourse_connect_secret`: the same random value stored in Vercel as
   `DISCOURSE_CONNECT_PROVIDER_SECRET`
-- `discourse_connect_overrides_email`: enabled
-- `discourse_connect_overrides_username`: enabled
-- `discourse_connect_overrides_name`: enabled
+- `auth_overrides_email`: enabled
+- `auth_overrides_username`: enabled
+- `auth_overrides_name`: enabled
+- `auth_skip_create_confirm`: enabled
 
 Keep at least one documented Discourse administrator recovery path before enabling
 DiscourseConnect. Never commit or paste the shared secret into source control or chat.
