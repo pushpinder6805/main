@@ -11,6 +11,7 @@ import {
   UserGroupIcon,
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
+import CommunityHeroAction from "@/app/components/CommunityHeroAction";
 
 const services = [
   {title: "Workplace wellbeing", description: "Practical support for stress, confidence and sustainable performance at work.", image: "/images/Workplace-Wellbeing.jpg"},
@@ -50,12 +51,7 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col gap-4 sm:flex-row">
-                <Link
-                  href="https://community.workspherepulse.com/"
-                  className="rounded-md bg-blue-600 px-6 py-3 text-center font-bold text-white transition-colors hover:bg-blue-700"
-                >
-                  Join Workspherepulse
-                </Link>
+                <CommunityHeroAction />
                 
               </div>
             </div>
