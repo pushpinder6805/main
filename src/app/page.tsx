@@ -51,7 +51,7 @@ export default function Home() {
 
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Link
-                  href="https://test.workspherepulse.com/"
+                  href="https://community.workspherepulse.com/"
                   className="rounded-md bg-blue-600 px-6 py-3 text-center font-bold text-white transition-colors hover:bg-blue-700"
                 >
                   Join Workspherepulse
