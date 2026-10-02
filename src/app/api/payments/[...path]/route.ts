@@ -6,6 +6,8 @@ function permitted(path: string, method: string): boolean {
   if (method === 'POST' && path === 'bookings') return true;
   if (method === 'POST' && /^appointments\/\d+\/prepare$/.test(path)) return true;
   if (method === 'GET' && path === 'sessions') return true;
+  if (method === 'GET' && path === 'advisor/status') return true;
+  if (method === 'POST' && path === 'advisor/onboard') return true;
   return false;
 }
 
