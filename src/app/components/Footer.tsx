@@ -4,7 +4,7 @@ import Link from "next/link";
 const links = {
   Platform: [["Find an advisor", "/program/advisors"], ["AI sessions", "/program/messages"], ["Become an advisor", "/program/onboard"], ["Community", "https://community.workspherepulse.com"]],
   Company: [["About", "/about"], ["Contact", "/contact"], ["Service guarantee", "/service-guarantee"], ["Seller FAQ", "/seller-faq"]],
-  Legal: [["Terms of service", "/terms"], ["Privacy policy", "/privacy"], ["Cancellations & refunds", "/cancellations-refunds"], ["Advisor agreement", "/seller-AUP"]],
+  Legal: [["Terms of service", "/terms"], ["Privacy policy", "/privacy"], ["Cancellations & refunds", "/cancellations-refunds"], ["Delete account", "/delete-account"], ["Advisor agreement", "/seller-AUP"]],
 };
 
 export default function Footer() {
