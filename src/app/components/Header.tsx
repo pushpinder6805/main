@@ -19,7 +19,7 @@ export default function Header() {
     ["Browse advisors", "/program/advisors"],
     ["My dashboard", "/program/dashboard"],
     ["Appointments", "/program/appointments"],
-    ["AI sessions", "/program/messages"],
+    ["AI Advisor", "/program/messages"],
     ["Become an advisor", "/program/onboard"],
   ];
 

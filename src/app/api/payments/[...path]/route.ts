@@ -8,6 +8,9 @@ function permitted(path: string, method: string): boolean {
   if (method === 'GET' && path === 'sessions') return true;
   if (method === 'GET' && path === 'advisor/status') return true;
   if (method === 'POST' && path === 'advisor/onboard') return true;
+  if (method === 'GET' && path === 'ai/web/config') return true;
+  if (method === 'POST' && path === 'ai/web/orders') return true;
+  if (method === 'POST' && /^ai\/web\/orders\/[0-9a-f-]+\/(prepare|start)$/.test(path)) return true;
   return false;
 }
 
