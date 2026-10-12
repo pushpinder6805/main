@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">Default profile picture</title>
+  <rect width="256" height="256" rx="48" fill="#e8ebe3"/>
+  <circle cx="128" cy="92" r="45" fill="#89917b"/>
+  <path d="M45 224c7-53 39-82 83-82s76 29 83 82" fill="#89917b"/>
+</svg>
