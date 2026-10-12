@@ -11,6 +11,7 @@ export default function AdvisorsPage() {
   const router = useRouter();
   const {user, isLoading} = useAuth();
   const [advisors, setAdvisors] = useState<Advisor[]>([]);
+  const [aiFromAmount, setAiFromAmount] = useState<number | null>(null);
   const [query, setQuery] = useState('');
   const [skill, setSkill] = useState('');
   const [error, setError] = useState('');
@@ -28,6 +29,18 @@ export default function AdvisorsPage() {
       else setAdvisors(result.data || []);
       setLoading(false);
     });
+    void fetch('/api/payments/ai/web/config', {cache: 'no-store'})
+      .then(async response => {
+        if (!response.ok) throw new Error('Unable to load AI pricing.');
+        return response.json() as Promise<{products?: Array<{amount: number}>}>;
+      })
+      .then(config => {
+        const amounts = (config.products || [])
+          .map(product => product.amount)
+          .filter(amount => Number.isFinite(amount) && amount >= 0);
+        setAiFromAmount(amounts.length ? Math.min(...amounts) : null);
+      })
+      .catch(() => setAiFromAmount(null));
   }, [user, isLoading, router]);
 
   const skills = useMemo(
@@ -76,7 +89,7 @@ export default function AdvisorsPage() {
           <div className="mt-5 inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-[#d9e8b8]">Ready for booking</div>
           <p className="mt-4 line-clamp-3 text-sm leading-6 text-white/70">Private text guidance for workplace decisions, difficult conversations and practical next steps.</p>
           <div className="mt-4 flex flex-wrap gap-2"><span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">Immediate guidance</span><span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">Private text session</span></div>
-          <div className="mt-5 flex items-end justify-between border-t border-white/10 pt-4"><p className="font-bold">From $4.99</p><span className="text-sm font-bold text-[#d9e8b8] transition group-hover:translate-x-1">Book session →</span></div>
+          <div className="mt-5 flex items-end justify-between border-t border-white/10 pt-4"><p className="font-bold">{aiFromAmount === null ? 'View prices' : `From $${(aiFromAmount / 100).toFixed(2)}`}</p><span className="text-sm font-bold text-[#d9e8b8] transition group-hover:translate-x-1">Book session →</span></div>
         </Link>}
         {visible.map(advisor => {
           const price = advisor.pricing.find(item => item.is_active);
